@@ -94,6 +94,23 @@ void ofApp::update()
 {
 	showFPS();
     if(do_exit == 1) {exit();std::exit(1);}
+
+    updateButtons();
+
+    if(buttons[0].isDown()) {
+        if(buttons[0].isPressedThisFrame()) {
+            demoModes++;
+            if (drawModes != 3) drawModes = 3;      // switch the draw mode to display demo mode.
+            if (demoModes > 4) demoModes = 0;       // tap through the demo modes on each press.
+        }
+    } else if(buttons[1].isDown()) {
+        cout << "Button 2" << endl;
+    } else if(buttons[2].isDown()) {
+        cout << "Button 3" << endl;
+    } else if(buttons[3].isDown()) {
+        cout << "Button 4" << endl;
+    }
+
 	
     /*if(digitalRead(BUTTON_1) == 0) ofLogNotice() << "Button 1: Event counter: " << event_counter;
 	if(digitalRead(BUTTON_2) == 0) ofLogNotice() << "Button 2: Event counter: " << event_counter;
@@ -283,7 +300,7 @@ void ofApp::keyPressed(int key){
             
             if (drawModes == 2) {
                 currentImage++;
-                if (currentImage > dirImg.size()-1) currentImage = 0;
+                if (currentImage > (int) dirImg.size()-1) currentImage = 0;
                 img[currentImage].load(dirImg.getPath(currentImage));
             }
             break;
@@ -295,7 +312,7 @@ void ofApp::keyPressed(int key){
             
             if (drawModes == 2) {
                 currentImage--;
-                if (currentImage < 0) currentImage = dirImg.size()-1;
+                if (currentImage < 0) currentImage = (int) dirImg.size()-1;
                 img[currentImage].load(dirImg.getPath(currentImage));
             }
             break;
@@ -325,7 +342,7 @@ void ofApp::keyReleased(int key)
             if (drawModes == 1)
             {
                 currentVideo++;
-                if (currentVideo > dirVid.size()-1) currentVideo = 0;
+                if (currentVideo > (int) dirVid.size()-1) currentVideo = 0;
                 vid[currentVideo].load(dirVid.getPath(currentVideo));
                 vid[currentVideo].play();
             }                       // restart video at first frame
@@ -334,7 +351,7 @@ void ofApp::keyReleased(int key)
         case '-':
             if (drawModes == 1) {
                 currentVideo--;
-                if (currentVideo < 0) currentVideo = dirVid.size()-1;
+                if (currentVideo < 0) currentVideo = (int) dirVid.size()-1;
                 vid[currentVideo].load(dirVid.getPath(currentVideo));
                 vid[currentVideo].play();
             }
@@ -378,7 +395,12 @@ void ofApp::showFPS() {
 //--------------------------------------------------------------
 void ofApp::setupButtons()
 {
-#ifdef OF_TARGET_LINUXARMV6L
+    for(int i = 0;i < 4;i++)
+    {
+        buttons[i].setId(i+1);
+    }
+
+#ifdef OF_TARGET_RASPI
 
     if(wiringPiSetup() < 0) {
         ofLogError() << "Failed to init WiringPi lib";
@@ -392,19 +414,35 @@ void ofApp::setupButtons()
     pullUpDnControl(BUTTON_2,PUD_UP);
     pullUpDnControl(BUTTON_3,PUD_UP);
     pullUpDnControl(BUTTON_4,PUD_UP);
-    if(wiringPiISR( BUTTON_1, INT_EDGE_FALLING, &buttonHit1) < 0) {
-        ofLogError() << "Failed to set up interrupt 1" << endl;
-    }
-    if(wiringPiISR( BUTTON_2, INT_EDGE_FALLING, &buttonHit2) < 0) {
-        ofLogError() << "Failed to set up interrupt 2" << endl;
-    }
-    if(wiringPiISR( BUTTON_3, INT_EDGE_FALLING, &buttonHit3) < 0) {
-        ofLogError() << "Failed to set up interrupt 3" << endl;
-    }
-    if(wiringPiISR( BUTTON_4, INT_EDGE_FALLING, &buttonHit4) < 0) {
-        ofLogError() << "Failed to set up interrupt 4" << endl;
-    }
+//    if(wiringPiISR( BUTTON_1, INT_EDGE_FALLING, &buttonHit1) < 0) {
+//        ofLogError() << "Failed to set up interrupt 1" << endl;
+//    }
+//    if(wiringPiISR( BUTTON_2, INT_EDGE_FALLING, &buttonHit2) < 0) {
+//        ofLogError() << "Failed to set up interrupt 2" << endl;
+//    }
+//    if(wiringPiISR( BUTTON_3, INT_EDGE_FALLING, &buttonHit3) < 0) {
+//        ofLogError() << "Failed to set up interrupt 3" << endl;
+//    }
+//    if(wiringPiISR( BUTTON_4, INT_EDGE_FALLING, &buttonHit4) < 0) {
+//        ofLogError() << "Failed to set up interrupt 4" << endl;
+//    }
 #endif
+}
+
+//--------------------------------------------------------------
+void ofApp::updateButtons()
+{
+#ifdef OF_TARGET_RASPI
+    buttons[0].setState(digitalRead(BUTTON_1));
+    buttons[1].setState(digitalRead(BUTTON_2));
+    buttons[2].setState(digitalRead(BUTTON_3));
+    buttons[3].setState(digitalRead(BUTTON_4));
+#endif
+
+    for(int i = 0;i < 4;i++)
+    {
+        buttons[i].update();
+    }
 }
 
 //--------------------------------------------------------------

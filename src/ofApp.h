@@ -2,8 +2,11 @@
 
 #include "ofxTeensyOcto.h"
 #include "ofMain.h"
+#include "button.h"
 
-#ifdef OF_TARGET_LINUXARMV6L
+#define OF_TARGET_RASPI
+
+#ifdef OF_TARGET_RASPI
 #include "wiringPi.h"
 #endif
 
@@ -31,6 +34,7 @@ class ofApp : public ofBaseApp{
         void drawPong();
         void showFPS();
         void setupButtons();
+        void updateButtons();
     
     // LED - Teensy stuff
     //-----------------------------
@@ -80,5 +84,8 @@ class ofApp : public ofBaseApp{
     // Timer
     float prevTime;
     float curTime;
+
+    //Buttons
+    Button buttons[4];
 		
 };
