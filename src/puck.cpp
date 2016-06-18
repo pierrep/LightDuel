@@ -2,54 +2,68 @@
 
 Puck::Puck()
 {
+    m_Direction = 1;
+    m_StartSpeed = .2f;
+    m_CurrentSpeed = .2f;
+    m_Acceleration = .05f;
+    m_NormalizedPosition = .1f;
+    m_NormalizedWidth = 0.05f;
+    m_IsDead = false;
 
 }
 
-/*
-void Init( Color col , int pixelWidth)
+void Puck::setup( ofColor col)
 {
-m_Color = col;
-m_PixelWidth = pixelWidth;
+    m_Color = col;
 }
 
-Public Void ReturnPuck()
+void Puck::ReturnPuck()
 {
+
+
     if( m_Direction == 1)
         m_Direction = -1;
-    Else
+    else
         m_Direction = 1;
 
     // Increase speed
-m_Speed += m_Acceleration;
+    m_CurrentSpeed += m_Acceleration;
 }
 
 
-    Void UpdatePuck()
+void Puck::update(float frameTime)
 {
-// If the puck is still in play then update it
-if( !m_IsDead)
+    // If the puck is still in play then update it
+    if( !m_IsDead)
+    {
+        m_NormalizedPosition += m_CurrentSpeed * m_Direction * frameTime;
+    }
+}
+
+void Puck::ResetToStart()
 {
-    m_NormalizedPosition += m_Speed * m_Direction;
+    m_NormalizedPosition = .05f;
+    m_Direction = 1;
+    m_IsDead = false;
+    m_CurrentSpeed = m_StartSpeed;
 
-    if( m_NormalizedPosition > 1 || m_NormalizedPosition < 0 )
-        m_IsDead = true;
-}
 }
 
-Void ResetToStart()
+void Puck::ResetToEnd()
 {
-    m_NormalizedPosition = 0;
-m_Direction = 1;
-m_IsDead = false;
-m_Speed = m_StartSpeed;
+
+    m_NormalizedPosition = .95f;
+    m_Direction = -1;
+    m_IsDead = false;
+    m_CurrentSpeed = m_StartSpeed;
+
 }
 
-Void ResetToEnd()
+void Puck::draw(int w, int h, int yRow )
 {
-m_NormalizedPosition = 1;
-m_Direction = -1;
-m_IsDead = false;
-m_Speed = m_StartSpeed;
+    ofSetColor(ofColor::white);
+    ofDrawLine( (m_NormalizedPosition - (m_NormalizedWidth/2.0f)) * w,yRow,( m_NormalizedPosition + (m_NormalizedWidth/2.0f)) * w,yRow);
+    //ofDrawLine( .4f * w,yRow, .6f * w,yRow);
 }
 
-*/
+

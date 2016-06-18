@@ -7,6 +7,7 @@ class Button
         Button();
         void update();
         void ButtonPressed();
+        void Draw( int w, int h );
         void setState(int poll) { polledState = poll;}
         void setId(int _id) {id = _id;}
         bool isDown() {return m_IsDown;}
@@ -22,5 +23,7 @@ class Button
         float prevTime;
         int polledState;
         int id;
+
+        int m_YRowIndex;
 };
 

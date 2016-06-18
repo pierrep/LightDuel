@@ -31,7 +31,7 @@ void Button::update()
 
     if( !m_CanPressDown)
     {
-        cout << "m_CoolDownTimer: " << m_CoolDownTimer << endl;
+       // cout << "m_CoolDownTimer: " << m_CoolDownTimer << endl;
         // Test for conditions so button has been lifted
          if( (polledState == 1) && (m_CoolDownTimer > m_CoolDownDuration) )
         {
@@ -45,6 +45,18 @@ void Button::update()
     {
         ButtonPressed();
     }
+}
+
+void Draw( int w, int h )
+{
+    /*
+    if(m_IsDown )
+         ofSetColor(ofColor::yellow);
+    else
+         ofSetColor(ofColor::blue);
+
+    ofDrawLine( 0, m_YRowIndex, 15, m_YRowIndex );
+    */
 }
 
 void Button::ButtonPressed()

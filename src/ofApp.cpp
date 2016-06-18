@@ -92,25 +92,24 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	showFPS();
+    //showFPS();
     if(do_exit == 1) {exit();std::exit(1);}
 
     updateButtons();
 
-    if(buttons[0].isDown()) {
-        if(buttons[0].isPressedThisFrame()) {
-            demoModes++;
-            if (drawModes != 3) drawModes = 3;      // switch the draw mode to display demo mode.
-            if (demoModes > 4) demoModes = 0;       // tap through the demo modes on each press.
-        }
-    } else if(buttons[1].isDown()) {
+    if(buttons[0].isPressedThisFrame()) {
+         cout << "Button 0" << endl;
+    } else if(buttons[1].isPressedThisFrame()) {
+        cout << "Button 1" << endl;
+    } else if(buttons[2].isPressedThisFrame()) {
         cout << "Button 2" << endl;
-    } else if(buttons[2].isDown()) {
+    } else if(buttons[3].isPressedThisFrame()) {
         cout << "Button 3" << endl;
-    } else if(buttons[3].isDown()) {
-        cout << "Button 4" << endl;
     }
 
+    curTime = ofGetElapsedTimeMillis();
+    game.update((curTime - prevTime) * .001f, buttons );
+    prevTime = curTime;
 	
     /*if(digitalRead(BUTTON_1) == 0) ofLogNotice() << "Button 1: Event counter: " << event_counter;
 	if(digitalRead(BUTTON_2) == 0) ofLogNotice() << "Button 2: Event counter: " << event_counter;
@@ -141,7 +140,8 @@ void ofApp::updateFbo()
     switch (drawModes)
     {
         case 0:            
-            drawPong();
+            //drawPong();
+            game.draw(fbo.getWidth(),fbo.getHeight());
             break;
         case 1:
             drawVideos();
@@ -166,7 +166,7 @@ void ofApp::updateFbo()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	return;
+    return;
     teensy.draw(20,300);
 
     ofSetColor(255);
@@ -292,6 +292,14 @@ void ofApp::keyPressed(int key){
 
             img[currentImage].load(dirImg.getPath(currentImage));
             break;
+
+        case 'z':
+           game.p1KeyPressDebug();
+            break;
+
+        case 'x':
+           game.p2KeyPressDebug();
+            break;
         
         case '=':
             if (drawModes == 1) {
@@ -384,12 +392,16 @@ void ofApp::setupMedia()
 }
 
 //--------------------------------------------------------------
-void ofApp::showFPS() {
+void ofApp::showFPS()
+{
+
 	curTime = ofGetElapsedTimeMillis();
 	if(curTime - prevTime > 2000) {
-		ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
+        //ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
 		prevTime = curTime;
+
 	}	
+
 }
 
 //--------------------------------------------------------------

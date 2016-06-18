@@ -3,6 +3,7 @@
 #include "ofxTeensyOcto.h"
 #include "ofMain.h"
 #include "button.h"
+#include "game.h"
 
 #define OF_TARGET_RASPI
 
@@ -85,7 +86,13 @@ class ofApp : public ofBaseApp{
     float prevTime;
     float curTime;
 
+
+
     //Buttons
     Button buttons[4];
+
+    Game game;
 		
+
 };
+
