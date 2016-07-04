@@ -3,8 +3,8 @@
 
 #define BUTTON_1 0
 #define BUTTON_2 1
-#define BUTTON_3 4
-#define BUTTON_4 6
+#define BUTTON_3 6
+#define BUTTON_4 4
 
 volatile int do_exit = 0;
 
@@ -50,7 +50,7 @@ void ofApp::setup() {
     
     // SYSTEM SETTINGS
     //--------------------------------------
-    stripWidth = 300;                            // pixel width of strip
+    stripWidth = 276;                            // pixel width of strip
     stripHeight = 1;                            // pixel height of strip
     stripsPerPort = 8;                          // total number of strips per port
     numPorts = 1;                               // total number of teensy ports?
@@ -76,6 +76,8 @@ void ofApp::setup() {
     
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
+
+    game.setup();
 }
 
 void ofApp::exit()

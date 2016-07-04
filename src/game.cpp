@@ -1,6 +1,10 @@
 #include "game.h"
 #include "button.h"
 
+
+#define HOST "127.0.0.1"
+#define PORT 10001
+
 Game::Game()
 {
    // m_State =idle;
@@ -25,6 +29,10 @@ Game::Game()
      m_P2Color = ofColor::yellow;
 }
 
+void Game::setup()
+{
+    oscSender.setup(HOST,PORT);
+}
 
 void Game::update(float frameTime, Button buttons[] )
 {
@@ -37,38 +45,54 @@ void Game::update(float frameTime, Button buttons[] )
         {
             if( lane2.m_Puck.m_NormalizedPosition + (lane2.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane2.m_ReturnZoneNormalized )
             {
-                if( lane2.m_Puck.m_Direction == 1 )
+                if( lane2.m_Puck.m_Direction == 1 ) {
                     lane2.m_Puck.ReturnPuck();
-
+                }
             }
+            ofxOscMessage m;
+            m.setAddress("/button1");
+            m.addIntArg(0);
+            oscSender.sendMessage(m);
         }
         if( buttons[1].isPressedThisFrame() )
         {
             if( lane1.m_Puck.m_NormalizedPosition - (lane1.m_Puck.m_NormalizedWidth/2.0f) < lane1.m_ReturnZoneNormalized )
             {
-                if( lane1.m_Puck.m_Direction == -1 )
+                if( lane1.m_Puck.m_Direction == -1 ) {
                     lane1.m_Puck.ReturnPuck();
-
+                }
             }
+            ofxOscMessage m;
+            m.setAddress("/button2");
+            m.addIntArg(0);
+            oscSender.sendMessage(m);
         }
 
         if( buttons[2].isPressedThisFrame() )
         {
             if( lane1.m_Puck.m_NormalizedPosition + (lane1.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane1.m_ReturnZoneNormalized )
             {
-                if( lane1.m_Puck.m_Direction == 1 )
+                if( lane1.m_Puck.m_Direction == 1 ) {
                     lane1.m_Puck.ReturnPuck();
-
+                }
             }
+            ofxOscMessage m;
+            m.setAddress("/button3");
+            m.addIntArg(0);
+            oscSender.sendMessage(m);
         }
         if( buttons[3].isPressedThisFrame() )
         {
             if( lane2.m_Puck.m_NormalizedPosition - (lane2.m_Puck.m_NormalizedWidth/2.0f) <  lane2.m_ReturnZoneNormalized )
             {
-                if( lane2.m_Puck.m_Direction == -1 )
+                if( lane2.m_Puck.m_Direction == -1 ) {
                     lane2.m_Puck.ReturnPuck();
-
+                }
             }
+            ofxOscMessage m;
+            m.setAddress("/button4");
+            m.addIntArg(0);
+            oscSender.sendMessage(m);
         }
 
 

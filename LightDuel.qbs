@@ -12,21 +12,23 @@ Project{
         name: { return FileInfo.baseName(path) }
 
         files: [
-            "src/button.cpp",
-            "src/button.h",
-            "src/game.cpp",
-            "src/game.h",
-            "src/lane.cpp",
-            "src/lane.h",
-            "src/puck.cpp",
-            "src/puck.h",
+            'src/button.cpp',
+            'src/button.h',
+            'src/game.cpp',
+            'src/game.h',
+            'src/lane.cpp',
+            'src/lane.h',
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
+            'src/puck.cpp',
+            'src/puck.h',
         ]
 
         of.addons: [
             'ofxTeensyOcto',
+            'ofxOsc',
+            'ofxXmlSettings',
         ]
 
         // additional flags for the project. the of module sets some

@@ -1,3 +1,3 @@
+ofxTeensyOcto
 ofxOsc
 ofxXmlSettings
-ofxTeensyOcto

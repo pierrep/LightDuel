@@ -1,6 +1,7 @@
 #pragma once
 #include "lane.h"
 #include "button.h"
+#include "ofxOsc.h"
 
 class Game
 {
@@ -11,6 +12,7 @@ class Game
 
         state m_State;
 
+        void setup();
         void update( float deltaTime, Button buttons[] );
         void ResetGame();
         void DrawRings(int gameWidth);
@@ -42,6 +44,9 @@ class Game
 
         // normalized time passed during state. Used to control animation effects
         float m_StateNormTime;
+
+        ofxOscSender oscSender;
+
 
 };
 
