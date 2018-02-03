@@ -7,12 +7,10 @@
 
 Game::Game()
 {
-   // m_State =idle;
-
     // debuggin installation with no button presses
     m_State = idle;
 
-    m_TargetScore = 3;
+    m_RoundPerGame = 3;
     m_P1Score = 0;
     m_P2Score = 0;
 
@@ -23,82 +21,91 @@ Game::Game()
 
      lane2.m_Strip1YIndex = 0;
      lane2.m_Strip2YIndex = 1;
-     lane1.m_FlipRreturnZoneColouring = true;
+
+     lane1._LaneFlipped = true;
+	 lane1._LaneFlipped = false;
 
      m_P1Color = ofColor::blue;
      m_P2Color = ofColor::yellow;
 }
 
-void Game::setup()
+void Game::Setup()
 {
+	// Setup OSC
     oscSender.setup(HOST,PORT);
+	oscReciever.setup(PORT);
 }
 
-void Game::update(float frameTime, Button buttons[] )
-{
 
+
+void Game::Update(float frameTime, Button buttons[] )
+{
     if( m_State == inPlay )
     {
-
-        // Update player 1 inputs
+        // Update Player 1 inputs
         if( buttons[0].isPressedThisFrame() )
         {
+			// If the pucks norm pos + half width of puck (end of puck) is in the return zone
             if( lane2.m_Puck.m_NormalizedPosition + (lane2.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane2.m_ReturnZoneNormalized )
             {
-                if( lane2.m_Puck.m_Direction == 1 ) {
+                if( lane2.m_Puck.m_Direction == 1 )
+				{
                     lane2.m_Puck.ReturnPuck();
+					ButtonPressed(0, true);
                 }
             }
-            ofxOscMessage m;
-            m.setAddress("/button1");
-            m.addIntArg(0);
-            oscSender.sendMessage(m);
+			else			
+				ButtonPressed(0, false);			
         }
+
         if( buttons[1].isPressedThisFrame() )
         {
             if( lane1.m_Puck.m_NormalizedPosition - (lane1.m_Puck.m_NormalizedWidth/2.0f) < lane1.m_ReturnZoneNormalized )
             {
-                if( lane1.m_Puck.m_Direction == -1 ) {
+                if( lane1.m_Puck.m_Direction == -1 )
+				{
                     lane1.m_Puck.ReturnPuck();
+					ButtonPressed(1, true);
                 }
             }
-            ofxOscMessage m;
-            m.setAddress("/button2");
-            m.addIntArg(0);
-            oscSender.sendMessage(m);
+			else
+				ButtonPressed(1, false);
         }
 
+
+		// Update Player 2 inputs
         if( buttons[2].isPressedThisFrame() )
         {
             if( lane1.m_Puck.m_NormalizedPosition + (lane1.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane1.m_ReturnZoneNormalized )
             {
-                if( lane1.m_Puck.m_Direction == 1 ) {
+                if( lane1.m_Puck.m_Direction == 1 )
+				{
                     lane1.m_Puck.ReturnPuck();
+					ButtonPressed(2, true);
                 }
             }
-            ofxOscMessage m;
-            m.setAddress("/button3");
-            m.addIntArg(0);
-            oscSender.sendMessage(m);
+
+			ButtonPressed(2, false);
         }
         if( buttons[3].isPressedThisFrame() )
         {
             if( lane2.m_Puck.m_NormalizedPosition - (lane2.m_Puck.m_NormalizedWidth/2.0f) <  lane2.m_ReturnZoneNormalized )
             {
-                if( lane2.m_Puck.m_Direction == -1 ) {
+                if( lane2.m_Puck.m_Direction == -1 ) 
+				{
                     lane2.m_Puck.ReturnPuck();
+					ButtonPressed(3, true);
                 }
             }
-            ofxOscMessage m;
-            m.setAddress("/button4");
-            m.addIntArg(0);
-            oscSender.sendMessage(m);
+         
+			ButtonPressed(3, false);
         }
-
-
+		
+		// Update lanes
         lane1.update(frameTime);
         lane2.update(frameTime);
 
+		// Check wins
         if( lane1.m_P1Win )
         {
             // reset win state
@@ -106,11 +113,8 @@ void Game::update(float frameTime, Button buttons[] )
 
             m_P1Score++;
 
-            if( m_P1Score >= m_TargetScore)
-                SetState( gameWon );
-            else
-                SetState( roundWon );
-
+            if( m_P1Score >= m_RoundPerGame)	SetState( gameWon );
+            else								SetState( roundWon );
         }
         else if( lane1.m_P2Win )
         {
@@ -118,7 +122,7 @@ void Game::update(float frameTime, Button buttons[] )
 
             m_P2Score++;
 
-            if( m_P2Score >= m_TargetScore)
+            if( m_P2Score >= m_RoundPerGame)
                 SetState( gameWon );
             else
                 SetState( roundWon );
@@ -129,7 +133,7 @@ void Game::update(float frameTime, Button buttons[] )
 
             m_P1Score++;
 
-            if( m_P1Score >= m_TargetScore)
+            if( m_P1Score >= m_RoundPerGame)
                 SetState( gameWon );
             else
                 SetState( roundWon );
@@ -141,7 +145,7 @@ void Game::update(float frameTime, Button buttons[] )
 
             m_P2Score++;
 
-            if( m_P2Score >= m_TargetScore)
+            if( m_P2Score >= m_RoundPerGame)
                 SetState( gameWon );
             else
                 SetState( roundWon );
@@ -193,6 +197,26 @@ void Game::update(float frameTime, Button buttons[] )
             SetState( waitingToServe );
         }
     }
+}
+
+void Game::ButtonPressed(int btnIndex, bool hitPuck)
+{
+	// concat address string using button index
+	string address = "/button" + btnIndex;
+
+	ofxOscMessage m;
+	m.setAddress(address);
+
+	if (hitPuck)
+	{
+		m.addIntArg(1);
+	}
+	else if(!hitPuck)
+	{
+		m.addIntArg(0);
+	}
+	
+	oscSender.sendMessage(m);
 }
 
 void Game::SetState( state state )

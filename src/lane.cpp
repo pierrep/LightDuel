@@ -24,7 +24,7 @@ void Lane::init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, i
 
     m_ReturnZonePixelLength = m_PixelLength * m_ReturnZoneNormalized;
 
-    m_FlipRreturnZoneColouring = flipReturnCol;
+    _LaneFlipped = flipReturnCol;
 }
 
 void Lane::P1ButtonPress()
@@ -48,18 +48,19 @@ void Lane::Reset( )
 
 void Lane::update(float frameTime )
 {
-
     m_Puck.update(frameTime);
     m_P1Button.update();
     m_P2Button.update();
 
     if(m_Puck.m_NormalizedPosition < 0 )
     {
-        m_P2Win = true;
+		if (_LaneFlipped)	m_P1Win = true;
+		else 				m_P2Win = true;
     }
     else if( m_Puck.m_NormalizedPosition > 1)
     {
-        m_P1Win = true;
+		if (_LaneFlipped)	m_P2Win = true;
+		else 				m_P1Win = true;
     }
     else
     {
@@ -76,7 +77,7 @@ void Lane::update(float frameTime )
 
 void Lane::draw(int w, int h)
 {
-    if( m_FlipRreturnZoneColouring)
+    if( _LaneFlipped)
     {
         // Draw strip 1
         ofSetColor(m_ReturnZonePlayer1BaseColor * .7f);
