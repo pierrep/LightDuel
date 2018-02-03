@@ -22,3 +22,5 @@ Backups/LightDuelOLD
 bin/readMe.txt
 bin/LightDuel_debug
 build/
+LightDuel.qbs.user
+
