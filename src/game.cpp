@@ -19,8 +19,8 @@ Game::Game()
      m_ServeDuration = 2;
      m_StateTimer = 0;
 
-     _RightLane.m_Strip1YIndex = 0;
-     _RightLane.m_Strip2YIndex = 1;
+     _RightLane.m_Strip1YIndex = 1;
+     _RightLane.m_Strip2YIndex = 2;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -196,32 +196,33 @@ void Game::DrawRings( int gameWidth)
     // Draw rings
     ofSetColor(_NearPlayerCol);
     ofDrawLine(0,7,gameWidth,7);
-    ofDrawLine(0,6,gameWidth,6);
+    ofDrawLine(0,8,gameWidth,8);
 
     // Draw rings
     ofSetColor(_FarPlayerCol);
-    ofDrawLine(0,2,gameWidth,2);
     ofDrawLine(0,3,gameWidth,3);
+    ofDrawLine(0,4,gameWidth,4);
 }
 
 void Game::draw(int gameWidth, int gameHeight)
 {
+
     if( m_State == idle )
     {
         for( int i = 0; i < 8; i++ )
         {
             ofSetColor(ofColor::white);
-            ofDrawLine(0,i,gameWidth,i);
+            ofDrawLine(0,i+1,gameWidth,i+1);
         }
 
-       DrawRings(gameWidth);
+        DrawRings(gameWidth);
     }
     else if( m_State == waitingToServe )
     {
         for( int i = 0; i < 8; i++ )
         {
             ofSetColor(ofColor::purple * (1- m_StateNormTime));
-            ofDrawLine(0,i,gameWidth,i);
+            ofDrawLine(0,i,gameWidth,i+1);
         }
 
         DrawRings(gameWidth);
@@ -230,7 +231,6 @@ void Game::draw(int gameWidth, int gameHeight)
     {
         _LeftLane.draw(gameWidth, gameHeight);
         _RightLane.draw(gameWidth, gameHeight);
-
 
         DrawRings(gameWidth);
 
@@ -242,7 +242,7 @@ void Game::draw(int gameWidth, int gameHeight)
         {
              // TODO: change to player who wons color
             ofSetColor(m_WinningColor * sin( m_StateNormTime * 20 ));
-            ofDrawLine(0,i,gameWidth,i);
+            ofDrawLine(0,i+1,gameWidth,i+1);
         }
 
        DrawRings(gameWidth);
@@ -253,9 +253,10 @@ void Game::draw(int gameWidth, int gameHeight)
         {
             // TODO: change to player who wons color
             ofSetColor(m_WinningColor * sin( m_StateNormTime * 30 ));
-            ofDrawLine(0,i,gameWidth,i);
+            ofDrawLine(0,i+1,gameWidth,i+1);
         }
 
        DrawRings(gameWidth);
     }
+
 }
