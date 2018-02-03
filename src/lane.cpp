@@ -14,7 +14,7 @@ Lane::Lane()
 
 }
 
-void Lane::init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y, bool flipReturnCol  )
+void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y, bool flipReturnCol )
 {
     _NearReturnZoneBaseCol = returnzone1col;
     _FarReturnZoneBaseCol = returnzone2col;
@@ -34,15 +34,11 @@ void Lane::Reset( )
     m_ReturnZoneNormalized = .2f;
 }
 
-void Lane::update(float frameTime )
+void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
 {
 	// Updates the puck position
     m_Puck.update(frameTime);
-
-	// Checks if the button is up or down
-    _NearButton.update();
-    _FarButton.update();
-
+		
 	// Check to see if the puck has moved outside lane == WIN
     if(m_Puck.m_NormalizedPosition < 0 )
     {
@@ -56,16 +52,23 @@ void Lane::update(float frameTime )
     {
 		// Check to see if buttons are pressed within the normalized zones
 		// Player 1 is on the 0 end of the normalized strip 
-        if(_NearButton.isPressedThisFrame())
+        if(buttonNear.isPressedThisFrame())
         {
-			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized)
+			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized
+				&& m_Puck.m_Direction == -1)
+			{
 				m_Puck.ReturnPuck();
+			}
         }
+
 		// Player 2 is on the 1 side of the normalized strip
-        else if(_FarButton.isPressedThisFrame())
-        {
-			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized)
+        if(buttonFar.isPressedThisFrame())
+        {			
+			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized
+				&& m_Puck.m_Direction == 1)
+			{
 				m_Puck.ReturnPuck();
+			}			
         }
     }
 }

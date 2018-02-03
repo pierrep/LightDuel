@@ -9,7 +9,7 @@ class Lane
 		
         void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone);
         void draw(int width, int height);
-        void update(float frameTime);
+        void update(float frameTime, Button buttonNear, Button buttonFar);
 
         void Reset();
 
@@ -34,10 +34,7 @@ class Lane
 
         ofColor _FarReturnZoneBaseCol;
         ofColor _FarReturnZoneCurrentCol;
-
-        Button _NearButton;
-        Button _FarButton;
-
+		
         Puck m_Puck;
 
 };

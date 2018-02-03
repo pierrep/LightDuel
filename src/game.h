@@ -15,8 +15,8 @@ class Game
         state m_State;
 
 		// Methods
-        void Setup();
-        void Update( float deltaTime, Button buttons[] );
+        void Setup(Button buttons[]);
+        void Update(float deltaTime, Button buttons[]);
         void ResetGame();
         void DrawRings(int gameWidth);
 

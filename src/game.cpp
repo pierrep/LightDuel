@@ -30,26 +30,25 @@ Game::Game()
      _FarPlayerCol = ofColor::yellow;
 }
 
-void Game::Setup()
+void Game::Setup(Button buttons[])
 {
 	// Setup OSC
     oscSender.setup(HOST,PORT);
 	oscReciever.setup(PORT);
 }
 
-void Game::Update(float frameTime, Button buttons[] )
+void Game::Update(float frameTime, Button buttons[])
 {
     if( m_State == inPlay )
     {
 		// Update lanes
-        _LeftLane.update(frameTime);
-        _RightLane.update(frameTime);
+        _LeftLane.update(frameTime, buttons[0], buttons[1]);
+        _RightLane.update(frameTime, buttons[2], buttons[3]);
 
 		// Check wins
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
         {
             m_WinningColor = _NearPlayerCol;
-
             _NearPlayerScore++;
 
             if( _NearPlayerScore >= _RoundsPerGame)	SetState( gameWon );
@@ -58,7 +57,6 @@ void Game::Update(float frameTime, Button buttons[] )
         else if(_LeftLane._FarScoredThisFrame || _RightLane._FarScoredThisFrame)
         {
              m_WinningColor = _FarPlayerCol;
-
             _FarPlayerScore++;
 
             if( _FarPlayerScore >= _RoundsPerGame)	SetState(gameWon);              

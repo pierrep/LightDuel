@@ -41,7 +41,6 @@ void Button::update()
         }
     }
 
-
     if( (polledState == 0)  && m_CanPressDown )
     {
         ButtonPressed();

@@ -75,7 +75,7 @@ void ofApp::setup() {
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
-    game.Setup();
+    game.Setup(buttons);
 }
 
 void ofApp::exit()
@@ -107,7 +107,7 @@ void ofApp::update()
     }
 
     curTime = ofGetElapsedTimeMillis();
-    game.Update((curTime - prevTime) * .001f, buttons );
+    game.Update((curTime - prevTime) * .001f , buttons);
     prevTime = curTime;
 	
     /*if(digitalRead(BUTTON_1) == 0) ofLogNotice() << "Button 1: Event counter: " << event_counter;
