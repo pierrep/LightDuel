@@ -43,10 +43,10 @@ void Game::Setup(Button buttons[])
 void Game::Update(float frameTime, Button buttons[])
 {
     if( m_State == inPlay )
-    {
+    {		
 		// Update lanes
-        _LeftLane.update(frameTime, buttons[0], buttons[3]);
-        _RightLane.update(frameTime, buttons[1], buttons[2]);
+        _LeftLane.update(frameTime, buttons[0], buttons[1]);
+        _RightLane.update(frameTime, buttons[2], buttons[3]);
 
 		// Check wins
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
