@@ -6,8 +6,6 @@ Lane::Lane()
     m_ReturnZoneNormalized = 0.2f;
     _NearReturnZoneBaseCol = ofColor::blue;
     _FarReturnZoneBaseCol = ofColor::yellow;
-    m_Strip1YIndex = 5;
-    m_Strip2YIndex = 6;
 
     _NearScoredThisFrame = false;
     _FarScoredThisFrame = false;

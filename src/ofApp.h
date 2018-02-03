@@ -5,9 +5,7 @@
 #include "button.h"
 #include "game.h"
 
-//#define OF_TARGET_RASPI
-
-#ifdef OF_TARGET_RASPI
+#ifdef TARGET_RASPBERRY_PI
 #include "wiringPi.h"
 #endif
 
