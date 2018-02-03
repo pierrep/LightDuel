@@ -54,9 +54,10 @@ void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
 		// Player 1 is on the 0 end of the normalized strip 
         if(buttonNear.isPressedThisFrame())
         {
-			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized
-				&& m_Puck.m_Direction == -1)
+			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized)
 			{
+				ofLogNotice() << "Near return on lane:" << _Index;
+
 				m_Puck.ReturnPuck();
 			}
         }
@@ -64,9 +65,9 @@ void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
 		// Player 2 is on the 1 side of the normalized strip
         if(buttonFar.isPressedThisFrame())
         {			
-			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized
-				&& m_Puck.m_Direction == 1)
+			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized)
 			{
+				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
 			}			
         }
