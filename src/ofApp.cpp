@@ -96,18 +96,6 @@ void ofApp::update()
 
     updateButtons();
 
-	/*
-    if(buttons[0].isPressedThisFrame()) {
-         cout << "Button 0" << endl;
-    } else if(buttons[1].isPressedThisFrame()) {
-        cout << "Button 1" << endl;
-    } else if(buttons[2].isPressedThisFrame()) {
-        cout << "Button 2" << endl;
-    } else if(buttons[3].isPressedThisFrame()) {
-        cout << "Button 3" << endl;
-    }	
-	*/
-
     curTime = ofGetElapsedTimeMillis();
     game.Update((curTime - prevTime) * .001f , buttons);
     prevTime = curTime;
@@ -135,7 +123,7 @@ void ofApp::update()
 void ofApp::updateFbo()
 {    
     fbo.begin();                                // begins the fbo
-    ofClear(0,0,0);                             // refreshes fbo, removes artifacts
+    ofClear(255,0,255);                             // refreshes fbo, removes artifacts
     
     ofPushStyle();
     switch (drawModes)
@@ -157,7 +145,7 @@ void ofApp::updateFbo()
             break;
     }
     ofPopStyle();
-    
+
     fbo.end();                                  // closes the fbo
 
 }
@@ -192,7 +180,7 @@ void ofApp::draw()
 
     ofColor colors;
     ofPushMatrix();
-    ofTranslate(0,200);
+    ofTranslate(20,200);
     ofSetRectMode(OF_RECTMODE_CENTER);
 
     for (int y = 0; y < stripHeight*stripsPerPort*numPorts; y++)
@@ -202,8 +190,8 @@ void ofApp::draw()
             ofPushMatrix();
             colors = guiPixels.getColor(x, y);
             ofSetColor(colors);
-            ofTranslate(x*2, y*2 + (y/16*4)); //sections in groups
-            ofDrawRectangle(x, y, 2, 2);
+            ofTranslate(x*3, y*6 + (y/16*4)); //sections in groups
+            ofDrawRectangle(x, y, 3, 6);
             ofPopMatrix();
         }
     }
