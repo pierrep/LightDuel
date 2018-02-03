@@ -19,6 +19,9 @@ Game::Game()
      m_ServeDuration = 2;
      m_StateTimer = 0;
 
+	 _LeftLane._Index = 0;
+	 _RightLane._Index = 1;
+
      _RightLane.m_Strip1YIndex = 1;
      _RightLane.m_Strip2YIndex = 2;
 
@@ -42,8 +45,8 @@ void Game::Update(float frameTime, Button buttons[])
     if( m_State == inPlay )
     {
 		// Update lanes
-        _LeftLane.update(frameTime, buttons[0], buttons[1]);
-        _RightLane.update(frameTime, buttons[2], buttons[3]);
+        _LeftLane.update(frameTime, buttons[0], buttons[3]);
+        _RightLane.update(frameTime, buttons[1], buttons[2]);
 
 		// Check wins
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)

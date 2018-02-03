@@ -29,6 +29,8 @@ class Lane
         int m_ReturnZonePixelLength;
         float m_ReturnZoneNormalized;
 
+		int _Index;
+
         ofColor _NearReturnZoneBaseCol;
         ofColor _NearReturnZoneCurrentCol;
 

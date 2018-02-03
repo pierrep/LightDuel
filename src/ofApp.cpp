@@ -100,7 +100,7 @@ void ofApp::update()
     game.Update((curTime - prevTime) * .001f , buttons);
     prevTime = curTime;
 	
-    /*if(digitalRead(BUTTON_1) == 0) ofLogNotice() << "Button 1: Event counter: " << event_counter;
+    /*if(digitalRead(BUTTON_1) == 0) ofLog c() << "Button 1: Event counter: " << event_counter;
 	if(digitalRead(BUTTON_2) == 0) ofLogNotice() << "Button 2: Event counter: " << event_counter;
 	if(digitalRead(BUTTON_3) == 0) ofLogNotice() << "Button 3: Event counter: " << event_counter;
     if(digitalRead(BUTTON_4) == 0) ofLogNotice() << "Button 4: Event counter: " << event_counter;*/
