@@ -36,14 +36,14 @@ class Game
 
 		// Colours
         ofColor m_WinningColor;
-        ofColor m_P1Color;
-        ofColor m_P2Color;
+        ofColor _NearPlayerCol;
+        ofColor _FarPlayerCol;
 		ofColor m_IdleColor;
 
 		// Player scores per game
-        int m_P1Score;
-        int m_P2Score;
-        int m_RoundPerGame;
+        int _NearPlayerScore;
+        int _FarPlayerScore;
+        int _RoundsPerGame;
 
 		// Durations and timers for states 
         float m_RoundWinDuration;

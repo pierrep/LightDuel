@@ -19,8 +19,6 @@ void Puck::setup( ofColor col)
 
 void Puck::ReturnPuck()
 {
-
-
     if( m_Direction == 1)
         m_Direction = -1;
     else

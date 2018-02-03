@@ -12,11 +12,11 @@ class Lane
 
         void Reset();
 
-        void P1ButtonPress();
-        void P2ButtonPress();
+        bool _NearScoredThisFrame;
+        bool _FarScoredThisFrame;
 
-        bool m_P1Win;
-        bool m_P2Win;
+		bool _NearReturnThisFrame = false;
+		bool _FarReturnThisFrame = false;
 
         int m_Strip1YIndex;
         int m_Strip2YIndex;
@@ -28,14 +28,14 @@ class Lane
         int m_ReturnZonePixelLength;
         float m_ReturnZoneNormalized;
 
-        ofColor m_ReturnZonePlayer1BaseColor;
-        ofColor m_ReturnZonePlayer1CurrentColor;
+        ofColor _NearReturnZoneBaseCol;
+        ofColor _NearReturnZoneCurrentCol;
 
-        ofColor m_ReturnZonePlayer2BaseColor;
-        ofColor m_ReturnZonePlayer2CurrentColor;
+        ofColor _FarReturnZoneBaseCol;
+        ofColor _FarReturnZoneCurrentCol;
 
-        Button m_P1Button;
-        Button m_P2Button;
+        Button _NearButton;
+        Button _FarButton;
 
         Puck m_Puck;
 

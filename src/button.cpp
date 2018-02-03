@@ -25,7 +25,8 @@ void Button::update()
     m_CoolDownTimer += deltaTime; // accumulate time since last frame/update
 
     // Check for button up
-    if( m_IsDown && (polledState == 1) ) {
+    if( m_IsDown && (polledState == 1) )
+	{
         m_IsDown = false;
     }
 
@@ -33,7 +34,7 @@ void Button::update()
     {
        // cout << "m_CoolDownTimer: " << m_CoolDownTimer << endl;
         // Test for conditions so button has been lifted
-         if( (polledState == 1) && (m_CoolDownTimer > m_CoolDownDuration) )
+        if( (polledState == 1) && (m_CoolDownTimer > m_CoolDownDuration) )
         {
             m_CanPressDown = true;
             m_IsDown = false;

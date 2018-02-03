@@ -10,9 +10,9 @@ Game::Game()
     // debuggin installation with no button presses
     m_State = idle;
 
-    m_RoundPerGame = 3;
-    m_P1Score = 0;
-    m_P2Score = 0;
+    _RoundsPerGame = 3;
+    _NearPlayerScore = 0;
+    _FarPlayerScore = 0;
 
      m_RoundWinDuration = 4;
      m_GameWinDuration = 6;
@@ -21,12 +21,9 @@ Game::Game()
 
      lane2.m_Strip1YIndex = 0;
      lane2.m_Strip2YIndex = 1;
-
-     lane1._LaneFlipped = true;
-	 lane1._LaneFlipped = false;
-
-     m_P1Color = ofColor::blue;
-     m_P2Color = ofColor::yellow;
+	 
+     _NearPlayerCol = ofColor::blue;
+     _FarPlayerCol = ofColor::yellow;
 }
 
 void Game::Setup()
@@ -36,120 +33,34 @@ void Game::Setup()
 	oscReciever.setup(PORT);
 }
 
-
-
 void Game::Update(float frameTime, Button buttons[] )
 {
     if( m_State == inPlay )
     {
-        // Update Player 1 inputs
-        if( buttons[0].isPressedThisFrame() )
-        {
-			// If the pucks norm pos + half width of puck (end of puck) is in the return zone
-            if( lane2.m_Puck.m_NormalizedPosition + (lane2.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane2.m_ReturnZoneNormalized )
-            {
-                if( lane2.m_Puck.m_Direction == 1 )
-				{
-                    lane2.m_Puck.ReturnPuck();
-					ButtonPressed(0, true);
-                }
-            }
-			else			
-				ButtonPressed(0, false);			
-        }
-
-        if( buttons[1].isPressedThisFrame() )
-        {
-            if( lane1.m_Puck.m_NormalizedPosition - (lane1.m_Puck.m_NormalizedWidth/2.0f) < lane1.m_ReturnZoneNormalized )
-            {
-                if( lane1.m_Puck.m_Direction == -1 )
-				{
-                    lane1.m_Puck.ReturnPuck();
-					ButtonPressed(1, true);
-                }
-            }
-			else
-				ButtonPressed(1, false);
-        }
-
-
-		// Update Player 2 inputs
-        if( buttons[2].isPressedThisFrame() )
-        {
-            if( lane1.m_Puck.m_NormalizedPosition + (lane1.m_Puck.m_NormalizedWidth/2.0f) > 1 - lane1.m_ReturnZoneNormalized )
-            {
-                if( lane1.m_Puck.m_Direction == 1 )
-				{
-                    lane1.m_Puck.ReturnPuck();
-					ButtonPressed(2, true);
-                }
-            }
-
-			ButtonPressed(2, false);
-        }
-        if( buttons[3].isPressedThisFrame() )
-        {
-            if( lane2.m_Puck.m_NormalizedPosition - (lane2.m_Puck.m_NormalizedWidth/2.0f) <  lane2.m_ReturnZoneNormalized )
-            {
-                if( lane2.m_Puck.m_Direction == -1 ) 
-				{
-                    lane2.m_Puck.ReturnPuck();
-					ButtonPressed(3, true);
-                }
-            }
-         
-			ButtonPressed(3, false);
-        }
-		
 		// Update lanes
         lane1.update(frameTime);
         lane2.update(frameTime);
 
 		// Check wins
-        if( lane1.m_P1Win )
+        if(lane1._NearScoredThisFrame || lane2._NearScoredThisFrame)
         {
             // reset win state
-            m_WinningColor = m_P1Color;
+            m_WinningColor = _NearPlayerCol;
 
-            m_P1Score++;
+            _NearPlayerScore++;
 
-            if( m_P1Score >= m_RoundPerGame)	SetState( gameWon );
-            else								SetState( roundWon );
+            if( _NearPlayerScore >= _RoundsPerGame)	SetState( gameWon );
+            else									SetState( roundWon );
         }
-        else if( lane1.m_P2Win )
+        else if(lane1._FarScoredThisFrame || lane2._FarScoredThisFrame)
         {
-             m_WinningColor = m_P2Color;
+             m_WinningColor = _FarPlayerCol;
 
-            m_P2Score++;
+            _FarPlayerScore++;
 
-            if( m_P2Score >= m_RoundPerGame)
-                SetState( gameWon );
-            else
-                SetState( roundWon );
-        }
-        else if( lane2.m_P1Win )
-        {
-             m_WinningColor = m_P1Color;
-
-            m_P1Score++;
-
-            if( m_P1Score >= m_RoundPerGame)
-                SetState( gameWon );
-            else
-                SetState( roundWon );
-
-        }
-        else if( lane2.m_P2Win )
-        {
-             m_WinningColor = m_P2Color;
-
-            m_P2Score++;
-
-            if( m_P2Score >= m_RoundPerGame)
-                SetState( gameWon );
-            else
-                SetState( roundWon );
-        }
+            if( _FarPlayerScore >= _RoundsPerGame)	SetState(gameWon);              
+            else									SetState(roundWon);                
+        }       
     }
     else if( m_State == waitingToServe )
     {
@@ -264,14 +175,14 @@ void Game::SetState( state state )
 
 void Game::ResetGame()
 {
-    m_P1Score = 0;
-    m_P2Score = 0;
+    _NearPlayerScore = 0;
+    _FarPlayerScore = 0;
 
-    lane1.m_P1Win = false;
-    lane1.m_P2Win = false;
+    lane1._NearScoredThisFrame = false;
+    lane1._FarScoredThisFrame = false;
 
-    lane2.m_P1Win = false;
-    lane2.m_P2Win = false;
+    lane2._NearScoredThisFrame = false;
+    lane2._FarScoredThisFrame = false;
 
 
     lane1.m_Puck.ResetToStart();
@@ -312,12 +223,12 @@ void Game::p2KeyPressDebug()
 void Game::DrawRings( int gameWidth)
 {
     // Draw rings
-    ofSetColor(m_P1Color);
+    ofSetColor(_NearPlayerCol);
     ofDrawLine(0,7,gameWidth,7);
     ofDrawLine(0,6,gameWidth,6);
 
     // Draw rings
-    ofSetColor(m_P2Color);
+    ofSetColor(_FarPlayerCol);
     ofDrawLine(0,2,gameWidth,2);
     ofDrawLine(0,3,gameWidth,3);
 }
