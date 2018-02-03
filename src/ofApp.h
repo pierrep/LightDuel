@@ -29,6 +29,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
         void updateFbo();
+        void updateTeensy();
         void setupMedia();
         void enableVideo();
         void disableVideo();

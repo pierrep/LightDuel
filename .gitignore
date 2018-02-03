@@ -20,3 +20,5 @@ obj/Release/icon.res
 .vs/LightDuel/v15/ipch/AutoPCH/e03bb1078c893af2/LANE.ipch
 Backups/LightDuelOLD
 bin/readMe.txt
+bin/LightDuel_debug
+build/

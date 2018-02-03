@@ -61,13 +61,11 @@ void ofApp::setup() {
 
     dir = 1;
     
-    // setup our teensys
+    #ifdef OF_TARGET_RASPI
     teensy.setup(stripWidth, stripHeight, stripsPerPort, numPorts);
-    
     /* Configure our teensy boards (portName, xOffset, yOffset, width%, height%, direction) */
     teensy.serialConfigure("ttyACM0", 0, 0, 100, 100, 0);
-//    teensy.serialConfigure("ttyACM1", 0, 50, 100, 50, 0);
-
+    #endif
     
     // allocate our pixels, fbo, and texture
     fbo.allocate(stripWidth, stripHeight*stripsPerPort*numPorts, GL_RGB);
@@ -86,9 +84,8 @@ void ofApp::exit()
     fbo.begin();
     ofClear(0,0,0);
     fbo.end();
-    fbo.readToPixels(teensy.pixels1);
-    teensy.update();
 
+    updateTeensy();
 }
 
 //--------------------------------------------------------------
@@ -128,7 +125,7 @@ void ofApp::update()
     }
 
     updateFbo();                                // update our Fbo functions
-    teensy.update();                            // update our serial to teensy stuff
+    updateTeensy();
 
 }
 
@@ -160,15 +157,26 @@ void ofApp::updateFbo()
     ofPopStyle();
     
     fbo.end();                                  // closes the fbo
-    
-    fbo.readToPixels(teensy.pixels1);           // send fbo pixels to teensy
 
+}
+
+//--------------------------------------------------------------
+void ofApp::updateTeensy()
+{
+    #ifdef OF_TARGET_RASPI
+    fbo.readToPixels(teensy.pixels1);           // send fbo pixels to teensy
+    teensy.update();                            // update our serial to teensy stuff
+    #endif
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    #ifdef OF_TARGET_RASPI
     return;
+    #endif
+
+    /*
     teensy.draw(20,300);
 
     ofSetColor(255);
@@ -176,6 +184,30 @@ void ofApp::draw()
     ofDrawBitmapString("Brightness (up/down) == " + ofToString(brightness), ofGetWidth()-250, 80);
     ofDrawBitmapString("Videos # == " + ofToString(dirVid.size()), ofGetWidth()-250, 120);
     ofDrawBitmapString("Images # == " + ofToString(dirImg.size()), ofGetWidth()-250, 140);
+    */
+
+    fbo.readToPixels(guiPixels);
+
+    ofColor colors;
+    ofPushMatrix();
+    ofTranslate(0,200);
+    ofSetRectMode(OF_RECTMODE_CENTER);
+
+    for (int y = 0; y < stripHeight*stripsPerPort*numPorts; y++)
+    {
+        for (int x = 0; x < stripWidth; x++)
+        {
+            ofPushMatrix();
+            colors = guiPixels.getColor(x, y);
+            ofSetColor(colors);
+            ofTranslate(x*2, y*2 + (y/16*4)); //sections in groups
+            ofDrawRectangle(x, y, 2, 2);
+            ofPopMatrix();
+        }
+    }
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofPopMatrix();
+
 }
 
 void ofApp::drawPong()
@@ -270,7 +302,19 @@ void ofApp::keyPressed(int key){
     
     switch (key)
     {
-        //-----------------------------------------------
+        case '1':
+            buttons[0].setState(1);
+            break;
+        case '2':
+            buttons[1].setState(1);
+            break;
+        case '3':
+            buttons[2].setState(1);
+        break;
+        case '4':
+            buttons[3].setState(1);
+        break;
+
         case OF_KEY_UP:
             brightness += 2;
             if (brightness > 255) brightness = 255;
@@ -359,7 +403,18 @@ void ofApp::keyReleased(int key)
                 vid[currentVideo].play();
             }
             break;
-            
+        case '1':
+            buttons[0].setState(0);
+            break;
+        case '2':
+            buttons[1].setState(0);
+            break;
+        case '3':
+            buttons[2].setState(0);
+        break;
+        case '4':
+            buttons[3].setState(0);
+        break;
         default:
             break;
     }
