@@ -20,19 +20,15 @@ class Game
         void ResetGame();
         void DrawRings(int gameWidth);
 
-		void ButtonPressed(int btnIndex, bool hitPuck);
-		//bool PuckHit(Lane lane); TODO add this ot clean up the player input section
+		void ButtonPressed(int btnIndex, bool hitPuck);		
 
         void SetState( state state );
-
-        void p1KeyPressDebug();
-        void p2KeyPressDebug();
 
         void draw(int width, int height);
 
 		// Lane definitions
-        Lane lane1;
-        Lane lane2;
+        Lane _LeftLane;
+        Lane _RightLane;
 
 		// Colours
         ofColor m_WinningColor;

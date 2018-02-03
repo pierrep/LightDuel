@@ -19,8 +19,12 @@ Game::Game()
      m_ServeDuration = 2;
      m_StateTimer = 0;
 
-     lane2.m_Strip1YIndex = 0;
-     lane2.m_Strip2YIndex = 1;
+     _RightLane.m_Strip1YIndex = 0;
+     _RightLane.m_Strip2YIndex = 1;
+
+	 // Pass the lanes a ref to the game
+	// _LeftLane._Game = this;
+	// _RightLane._Game = this;
 	 
      _NearPlayerCol = ofColor::blue;
      _FarPlayerCol = ofColor::yellow;
@@ -38,13 +42,12 @@ void Game::Update(float frameTime, Button buttons[] )
     if( m_State == inPlay )
     {
 		// Update lanes
-        lane1.update(frameTime);
-        lane2.update(frameTime);
+        _LeftLane.update(frameTime);
+        _RightLane.update(frameTime);
 
 		// Check wins
-        if(lane1._NearScoredThisFrame || lane2._NearScoredThisFrame)
+        if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
         {
-            // reset win state
             m_WinningColor = _NearPlayerCol;
 
             _NearPlayerScore++;
@@ -52,7 +55,7 @@ void Game::Update(float frameTime, Button buttons[] )
             if( _NearPlayerScore >= _RoundsPerGame)	SetState( gameWon );
             else									SetState( roundWon );
         }
-        else if(lane1._FarScoredThisFrame || lane2._FarScoredThisFrame)
+        else if(_LeftLane._FarScoredThisFrame || _RightLane._FarScoredThisFrame)
         {
              m_WinningColor = _FarPlayerCol;
 
@@ -143,13 +146,13 @@ void Game::SetState( state state )
     {
         m_StateTimer = 0;
 
-        lane1.Reset();
-        lane2.Reset();
+        _LeftLane.Reset();
+        _RightLane.Reset();
 
        // if( m_P1Serve )
       //  {
-            lane1.m_Puck.ResetToStart();
-            lane2.m_Puck.ResetToEnd();
+            _LeftLane.m_Puck.ResetToStart();
+            _RightLane.m_Puck.ResetToEnd();
             m_P1Serve = false;
       //  }
       //  else
@@ -178,46 +181,16 @@ void Game::ResetGame()
     _NearPlayerScore = 0;
     _FarPlayerScore = 0;
 
-    lane1._NearScoredThisFrame = false;
-    lane1._FarScoredThisFrame = false;
+    _LeftLane._NearScoredThisFrame = false;
+    _LeftLane._FarScoredThisFrame = false;
 
-    lane2._NearScoredThisFrame = false;
-    lane2._FarScoredThisFrame = false;
+    _RightLane._NearScoredThisFrame = false;
+    _RightLane._FarScoredThisFrame = false;
 
 
-    lane1.m_Puck.ResetToStart();
-    lane2.m_Puck.ResetToEnd();
+    _LeftLane.m_Puck.ResetToStart();
+    _RightLane.m_Puck.ResetToEnd();
      m_P1Serve = false;
-}
-
-void Game::p1KeyPressDebug()
-{
-    lane1.P1ButtonPress();
-    lane2.P1ButtonPress();
-
-    if( m_State == idle )
-    {
-        SetState( waitingToServe );
-    }
-    else if( m_State == waitingToServe )
-    {
-        SetState( inPlay );
-    }
-}
-
-void Game::p2KeyPressDebug()
-{
-    lane1.P2ButtonPress();
-    lane2.P2ButtonPress();
-
-    if( m_State == idle )
-    {
-        SetState( waitingToServe );
-    }
-    else if( m_State == waitingToServe )
-    {
-        SetState( inPlay );
-    }
 }
 
 void Game::DrawRings( int gameWidth)
@@ -257,8 +230,8 @@ void Game::draw(int gameWidth, int gameHeight)
     }
     else if( m_State == inPlay )
     {
-        lane1.draw(gameWidth, gameHeight);
-        lane2.draw(gameWidth, gameHeight);
+        _LeftLane.draw(gameWidth, gameHeight);
+        _RightLane.draw(gameWidth, gameHeight);
 
 
         DrawRings(gameWidth);

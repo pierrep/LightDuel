@@ -77,7 +77,7 @@ void ofApp::setup() {
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
-    game.setup();
+    game.Setup();
 }
 
 void ofApp::exit()
@@ -110,7 +110,7 @@ void ofApp::update()
     }
 
     curTime = ofGetElapsedTimeMillis();
-    game.update((curTime - prevTime) * .001f, buttons );
+    game.Update((curTime - prevTime) * .001f, buttons );
     prevTime = curTime;
 	
     /*if(digitalRead(BUTTON_1) == 0) ofLogNotice() << "Button 1: Event counter: " << event_counter;
@@ -295,13 +295,6 @@ void ofApp::keyPressed(int key){
             img[currentImage].load(dirImg.getPath(currentImage));
             break;
 
-        case 'z':
-           game.p1KeyPressDebug();
-            break;
-
-        case 'x':
-           game.p2KeyPressDebug();
-            break;
         
         case '=':
             if (drawModes == 1) {

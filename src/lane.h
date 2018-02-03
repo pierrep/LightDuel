@@ -6,6 +6,7 @@ class Lane
 {
     public:
         Lane();
+		
         void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone);
         void draw(int width, int height);
         void update(float frameTime);

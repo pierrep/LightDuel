@@ -91,8 +91,6 @@ class ofApp : public ofBaseApp{
     //Buttons
     Button buttons[4];
 
-    Game game;
-		
-
+    Game game;	
 };
 
