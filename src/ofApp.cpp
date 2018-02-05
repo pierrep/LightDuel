@@ -61,7 +61,7 @@ void ofApp::setup() {
 
     dir = 1;
     
-    #ifdef OF_TARGET_RASPI
+    #ifdef TARGET_RASPBERRY_PI
     teensy.setup(stripWidth, stripHeight, stripsPerPort, numPorts);
     /* Configure our teensy boards (portName, xOffset, yOffset, width%, height%, direction) */
     teensy.serialConfigure("ttyACM0", 0, 0, 100, 100, 0);
@@ -153,7 +153,7 @@ void ofApp::updateFbo()
 //--------------------------------------------------------------
 void ofApp::updateTeensy()
 {
-    #ifdef OF_TARGET_RASPI
+    #ifdef TARGET_RASPBERRY_PI
     fbo.readToPixels(teensy.pixels1);           // send fbo pixels to teensy
     teensy.update();                            // update our serial to teensy stuff
     #endif
@@ -162,7 +162,7 @@ void ofApp::updateTeensy()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    #ifdef OF_TARGET_RASPI
+    #ifdef TARGET_RASPBERRY_PI
     return;
     #endif
 
@@ -452,7 +452,7 @@ void ofApp::setupButtons()
         buttons[i].setId(i+1);
     }
 
-#ifdef OF_TARGET_RASPI
+#ifdef TARGET_RASPBERRY_PI
 
     if(wiringPiSetup() < 0) {
         ofLogError() << "Failed to init WiringPi lib";
@@ -484,7 +484,7 @@ void ofApp::setupButtons()
 //--------------------------------------------------------------
 void ofApp::updateButtons()
 {
-#ifdef OF_TARGET_RASPI
+#ifdef TARGET_RASPBERRY_PI
     buttons[0].setState(digitalRead(BUTTON_1));
     buttons[1].setState(digitalRead(BUTTON_2));
     buttons[2].setState(digitalRead(BUTTON_3));
