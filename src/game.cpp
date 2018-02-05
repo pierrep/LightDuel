@@ -194,7 +194,7 @@ void Game::ResetGame()
      m_P1Serve = false;
 }
 
-void Game::DrawRings( int gameWidth)
+void Game::DrawRings(int gameWidth)
 {
     // Draw rings
     ofSetColor(_NearPlayerCol);
@@ -206,6 +206,7 @@ void Game::DrawRings( int gameWidth)
     ofDrawLine(0,3,gameWidth,3);
     ofDrawLine(0,4,gameWidth,4);
 }
+
 
 void Game::draw(int gameWidth, int gameHeight)
 {
@@ -263,3 +264,4 @@ void Game::draw(int gameWidth, int gameHeight)
     }
 
 }
+

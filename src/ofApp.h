@@ -87,8 +87,6 @@ class ofApp : public ofBaseApp{
     float prevTime;
     float curTime;
 
-
-
     //Buttons
     Button buttons[4];
 
