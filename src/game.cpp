@@ -24,6 +24,7 @@ Game::Game()
 
      _RightLane.m_Strip1YIndex = 1;
      _RightLane.m_Strip2YIndex = 2;
+     _LeftLane.m_LaneFlipped = true;
      _LeftLane.m_Strip1YIndex = 5;
      _LeftLane.m_Strip2YIndex = 6;
 
