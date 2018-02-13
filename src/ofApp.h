@@ -7,7 +7,10 @@
 
 #ifdef TARGET_RASPBERRY_PI
 #include "wiringPi.h"
+#define USE_TEENSY
 #endif
+
+#define USE_TEENSY
 
 class ofApp : public ofBaseApp{
 

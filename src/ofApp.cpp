@@ -61,7 +61,7 @@ void ofApp::setup() {
 
     dir = 1;
     
-    #ifdef TARGET_RASPBERRY_PI
+    #ifdef USE_TEENSY
     teensy.setup(stripWidth, stripHeight, stripsPerPort, numPorts);
     /* Configure our teensy boards (portName, xOffset, yOffset, width%, height%, direction) */
     teensy.serialConfigure("ttyACM0", 0, 0, 100, 100, 0);
@@ -80,12 +80,15 @@ void ofApp::setup() {
 
 void ofApp::exit()
 {
+
     /* turn all leds to black */
     fbo.begin();
     ofClear(0,0,0);
     fbo.end();
 
     updateTeensy();
+
+    ofLogNotice() << "Exiting....";
 }
 
 //--------------------------------------------------------------
@@ -129,7 +132,6 @@ void ofApp::updateFbo()
     switch (drawModes)
     {
         case 0:            
-            //drawPong();
             game.draw(fbo.getWidth(),fbo.getHeight());
             break;
         case 1:
@@ -140,6 +142,8 @@ void ofApp::updateFbo()
             break;
         case 3:
             drawDemos();
+        case 4:
+            drawPong();
         break;
         default:
             break;
@@ -153,7 +157,7 @@ void ofApp::updateFbo()
 //--------------------------------------------------------------
 void ofApp::updateTeensy()
 {
-    #ifdef TARGET_RASPBERRY_PI
+    #ifdef USE_TEENSY
     fbo.readToPixels(teensy.pixels1);           // send fbo pixels to teensy
     teensy.update();                            // update our serial to teensy stuff
     #endif
