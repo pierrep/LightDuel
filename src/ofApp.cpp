@@ -88,6 +88,7 @@ void ofApp::exit()
 
     updateTeensy();
 
+    teensy.close();
     ofLogNotice() << "Exiting....";
 }
 
