@@ -3,7 +3,12 @@
 
 //========================================================================
 int main( ){
-    ofSetupOpenGL(1200,800,OF_WINDOW);			// <-------- setup the GL context
+	
+	#ifdef TARGET_RASPBERRY_PI
+    ofSetupOpenGL(200,200,OF_WINDOW);			
+    #else
+    ofSetupOpenGL(1200,800,OF_WINDOW);			
+    #endif
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

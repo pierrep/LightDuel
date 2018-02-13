@@ -43,7 +43,7 @@ void ofApp::setup() {
     ofBackground(0, 0, 0);                      // default background to black / LEDs off
     ofDisableAntiAliasing();                    // we need our graphics sharp for the LEDs
     ofSetVerticalSync(false);
-    ofSetFrameRate(90);
+    ofSetFrameRate(60);
     
     signal(SIGINT, sigint);
     setupButtons();
@@ -95,7 +95,7 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    //showFPS();
+    showFPS();
     if(do_exit == 1) {exit();std::exit(1);}
 
     updateButtons();
@@ -418,6 +418,7 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::setupMedia()
 {
+	ofLogNotice() << "Setting up media..." << endl;
     dirVid.listDir("videos/");
     dirVid.sort();
     //allocate the vector to have as many ofVidePlayer as files
@@ -434,19 +435,15 @@ void ofApp::setupMedia()
         img.assign(dirImg.size(), ofImage());
     }
     currentImage = 0;
+    ofLogNotice() << "Finished setting up media..." << endl;
 }
 
 //--------------------------------------------------------------
 void ofApp::showFPS()
 {
-
-	curTime = ofGetElapsedTimeMillis();
-	if(curTime - prevTime > 2000) {
-        //ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
-		prevTime = curTime;
-
-	}	
-
+	if(ofGetFrameNum()%30 == 0 ) {
+		ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
+	}
 }
 
 //--------------------------------------------------------------
