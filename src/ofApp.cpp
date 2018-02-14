@@ -44,6 +44,7 @@ void ofApp::setup() {
     ofDisableAntiAliasing();                    // we need our graphics sharp for the LEDs
     ofSetVerticalSync(false);
     ofSetFrameRate(90);
+    ofSetWindowTitle("Light Duel");
 
     signal(SIGINT, sigint);
     setupButtons();
@@ -183,6 +184,7 @@ void ofApp::draw()
 
 void ofApp::drawGamePixels()
 {
+    ofDrawBitmapString("Use keys 1,2 & 3,4 to trigger lane buttons ",20,100);
     ofColor currentColour;
     ofPushMatrix();
     ofPushStyle();
@@ -226,7 +228,7 @@ void ofApp::drawGamePixels()
     ofTranslate(0,100);
 
     ofSetColor(255);
-    ofDrawBitmapString("LANE 1",0,15);
+    ofDrawBitmapString("LANE 1",stripWidth*pixelWidth+250,15);
     for (int y = 4; y < 6; y++)
     {
         //for (int x = stripWidth-1; x >= 0; x--)
@@ -244,7 +246,7 @@ void ofApp::drawGamePixels()
     ofTranslate(0,50);
 
     ofSetColor(255);
-    ofDrawBitmapString("RING 1",0,30);
+    ofDrawBitmapString("RING 1",stripWidth*pixelWidth+250,30);
     for (int y = 6; y < 8; y++)
     {
         for (int x = 270; x < stripWidth; x++)
