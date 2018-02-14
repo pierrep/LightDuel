@@ -22,11 +22,18 @@ Game::Game()
 	 _LeftLane._Index = 0;
 	 _RightLane._Index = 1;
 
+     #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
      _RightLane.m_Strip2YIndex = 1;
      _LeftLane.m_Strip1YIndex = 4;
      _LeftLane.m_Strip2YIndex = 5;
-     _LeftLane._LaneFlipped = true;
+#else
+     _RightLane.m_Strip1YIndex = 1;
+     _RightLane.m_Strip2YIndex = 2;
+     _LeftLane.m_Strip1YIndex = 5;
+     _LeftLane.m_Strip2YIndex = 6;
+#endif
+     //_LeftLane.m_LaneFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -201,6 +208,7 @@ void Game::ResetGame()
 
 void Game::DrawRings(int gameWidth)
 {
+#ifdef TARGET_RASPBERRY_PI
     // Draw rings
     ofSetColor(_NearPlayerCol);
     ofDrawLine(0,6,gameWidth,6);
@@ -210,6 +218,18 @@ void Game::DrawRings(int gameWidth)
     ofSetColor(_FarPlayerCol);
     ofDrawLine(0,2,gameWidth,2);
     ofDrawLine(0,3,gameWidth,3);
+
+#else
+    // Draw rings
+    ofSetColor(_NearPlayerCol);
+    ofDrawLine(0,7,gameWidth,7);
+    ofDrawLine(0,8,gameWidth,8);
+
+    // Draw rings
+    ofSetColor(_FarPlayerCol);
+    ofDrawLine(0,3,gameWidth,3);
+    ofDrawLine(0,4,gameWidth,4);
+#endif
 }
 
 

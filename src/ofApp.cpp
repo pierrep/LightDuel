@@ -127,13 +127,12 @@ void ofApp::update()
 void ofApp::updateFbo()
 {    
     fbo.begin();                                // begins the fbo
-    ofClear(0,0,0);							// refreshes fbo, removes artifacts
+    ofClear(255,0,255);							// refreshes fbo, removes artifacts
     
-    ofPushStyle();
     switch (drawModes)
     {
         case 0:            
-            game.draw(fbo.getWidth(),fbo.getHeight());
+            game.draw(278,fbo.getHeight());
             break;
         case 1:
             drawVideos();
@@ -149,7 +148,6 @@ void ofApp::updateFbo()
         default:
             break;
     }
-    ofPopStyle();
 
     fbo.end();                                  // closes the fbo
 
@@ -181,10 +179,11 @@ void ofApp::draw()
     ofDrawBitmapString("Images # == " + ofToString(dirImg.size()), ofGetWidth()-250, 140);
     */
 
-    fbo.readToPixels(guiPixels);
+   // fbo.readToPixels(guiPixels);
 
     ofColor colors;
     ofPushMatrix();
+    ofPushStyle();
     ofTranslate(20,200);
     ofSetRectMode(OF_RECTMODE_CENTER);
 
@@ -193,7 +192,7 @@ void ofApp::draw()
         for (int x = 0; x < stripWidth; x++)
         {
             ofPushMatrix();
-            colors = guiPixels.getColor(x, y);
+            colors = teensy.pixels1.getColor(x, y);
             ofSetColor(colors);
             ofTranslate(x*3, y*6 + (y/16*4)); //sections in groups
             ofDrawRectangle(x, y, 3, 6);
@@ -201,6 +200,7 @@ void ofApp::draw()
         }
     }
     ofSetRectMode(OF_RECTMODE_CORNER);
+    ofPopStyle();
     ofPopMatrix();
 
 }
