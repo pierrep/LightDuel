@@ -22,7 +22,7 @@ void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, in
 
     m_ReturnZonePixelLength = m_PixelLength * m_ReturnZoneNormalized;
 
-    _LaneFlipped = flipReturnCol;
+    m_LaneFlipped = flipReturnCol;
 }
 
 void Lane::Reset( )
@@ -74,7 +74,8 @@ void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
 
 void Lane::draw(int w, int h)
 {
-    if(_LaneFlipped)
+
+    if(m_LaneFlipped)
     {
         // Draw strip 1
         ofSetColor(_NearReturnZoneBaseCol * .7f);
