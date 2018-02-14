@@ -21,7 +21,7 @@ Game::Game()
 
      _RightLane._Index = 0;
      _LeftLane._Index = 1;
-     _LeftLane.m_LaneFlipped = true;
+    // _LeftLane.m_LaneFlipped = false;
 
      #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
@@ -34,7 +34,7 @@ Game::Game()
      _LeftLane.m_Strip1YIndex = 5;
      _LeftLane.m_Strip2YIndex = 6;
 #endif
-     //_LeftLane.m_LaneFlipped = true;
+     _LeftLane.m_LaneFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -61,7 +61,7 @@ void Game::Update(float frameTime, Button buttons[])
         _LeftLane.update(frameTime, buttons[0], buttons[3]);
 
 		// Check wins
-        if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
+        if(_LeftLane._FarScoredThisFrame || _RightLane._NearScoredThisFrame)
         {
             m_WinningColor = _NearPlayerCol;
             _NearPlayerScore++;
@@ -69,7 +69,7 @@ void Game::Update(float frameTime, Button buttons[])
             if( _NearPlayerScore >= _RoundsPerGame)	SetState( gameWon );
             else									SetState( roundWon );
         }
-        else if(_LeftLane._FarScoredThisFrame || _RightLane._FarScoredThisFrame)
+        else if(_LeftLane._NearScoredThisFrame || _RightLane._FarScoredThisFrame)
         {
              m_WinningColor = _FarPlayerCol;
             _FarPlayerScore++;
@@ -163,18 +163,18 @@ void Game::SetState( state state )
         _LeftLane.Reset();
         _RightLane.Reset();
 
-       // if( m_P1Serve )
-      //  {
+        if( m_P1Serve )
+        {
             _LeftLane.m_Puck.ResetToStart();
             _RightLane.m_Puck.ResetToEnd();
             m_P1Serve = false;
-      //  }
-      //  else
-      //  {
-       //     lane1.m_Puck.ResetToEnd();
-       //     lane2.m_Puck.ResetToStart();
-       //     m_P1Serve = true;
-       // }
+        }
+        else
+        {
+            _LeftLane.m_Puck.ResetToEnd();
+            _RightLane.m_Puck.ResetToStart();
+            m_P1Serve = true;
+        }
     }
     else if( m_State == inPlay )
     {

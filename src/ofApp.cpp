@@ -383,16 +383,16 @@ void ofApp::keyPressed(int key){
     switch (key)
     {
         case '1':
-            buttons[0].setState(1);
+            buttons[2].setState(1);
             break;
         case '2':
-            buttons[1].setState(1);
+            buttons[3].setState(1);
             break;
         case '3':
-            buttons[2].setState(1);
+            buttons[1].setState(1);
         break;
         case '4':
-            buttons[3].setState(1);
+            buttons[0].setState(1);
         break;
 
         case OF_KEY_UP:
@@ -484,16 +484,16 @@ void ofApp::keyReleased(int key)
             }
             break;
         case '1':
-            buttons[0].setState(0);
+            buttons[2].setState(0);
             break;
         case '2':
-            buttons[1].setState(0);
+            buttons[3].setState(0);
             break;
         case '3':
-            buttons[2].setState(0);
+            buttons[1].setState(0);
         break;
         case '4':
-            buttons[3].setState(0);
+            buttons[0].setState(0);
         break;
         default:
             break;
@@ -526,7 +526,7 @@ void ofApp::setupMedia()
 //--------------------------------------------------------------
 void ofApp::showFPS()
 {
-    if(ofGetFrameNum()%30 == 0 ) {
+    if(ofGetFrameNum()%300 == 0 ) {
         ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
     }
 }
