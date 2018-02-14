@@ -22,10 +22,11 @@ Game::Game()
 	 _LeftLane._Index = 0;
 	 _RightLane._Index = 1;
 
-     _RightLane.m_Strip1YIndex = 1;
-     _RightLane.m_Strip2YIndex = 2;
-     _LeftLane.m_Strip1YIndex = 5;
-     _LeftLane.m_Strip2YIndex = 6;
+     _RightLane.m_Strip1YIndex = 0;
+     _RightLane.m_Strip2YIndex = 1;
+     _LeftLane.m_Strip1YIndex = 4;
+     _LeftLane.m_Strip2YIndex = 5;
+     _LeftLane._LaneFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -39,11 +40,12 @@ void Game::Setup(Button buttons[])
 {
 	// Setup OSC
     oscSender.setup(HOST,PORT);
-	oscReciever.setup(PORT);
+	oscReceiver.setup(PORT);
 }
 
 void Game::Update(float frameTime, Button buttons[])
 {
+
     if( m_State == inPlay )
     {		
 		// Update lanes
@@ -134,6 +136,7 @@ void Game::ButtonPressed(int btnIndex, bool hitPuck)
 	}
 	
 	oscSender.sendMessage(m);
+	
 }
 
 void Game::SetState( state state )
@@ -200,13 +203,13 @@ void Game::DrawRings(int gameWidth)
 {
     // Draw rings
     ofSetColor(_NearPlayerCol);
+    ofDrawLine(0,6,gameWidth,6);
     ofDrawLine(0,7,gameWidth,7);
-    ofDrawLine(0,8,gameWidth,8);
 
     // Draw rings
     ofSetColor(_FarPlayerCol);
+    ofDrawLine(0,2,gameWidth,2);
     ofDrawLine(0,3,gameWidth,3);
-    ofDrawLine(0,4,gameWidth,4);
 }
 
 
@@ -215,55 +218,31 @@ void Game::draw(int gameWidth, int gameHeight)
 
     if( m_State == idle )
     {
-        for( int i = 0; i < 8; i++ )
-        {
-            ofSetColor(ofColor::white);
-            ofDrawLine(0,i+1,gameWidth,i+1);
-        }
-
-        DrawRings(gameWidth);
+		ofSetColor(ofColor::white);
+		ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
     else if( m_State == waitingToServe )
     {
-        for( int i = 0; i < 8; i++ )
-        {
-            ofSetColor(ofColor::purple * (1- m_StateNormTime));
-            ofDrawLine(0,i,gameWidth,i+1);
-        }
-
-        DrawRings(gameWidth);
+        ofSetColor(ofColor::purple * (1- m_StateNormTime));
+        ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
     else if( m_State == inPlay )
     {
         _LeftLane.draw(gameWidth, gameHeight);
         _RightLane.draw(gameWidth, gameHeight);
-
-        DrawRings(gameWidth);
-
     }
     else if( m_State == roundWon )
     {
-
-        for( int i = 0; i < 8; i++ )
-        {
-             // TODO: change to player who wons color
-            ofSetColor(m_WinningColor * sin( m_StateNormTime * 20 ));
-            ofDrawLine(0,i+1,gameWidth,i+1);
-        }
-
-       DrawRings(gameWidth);
+        ofSetColor(m_WinningColor * sin( m_StateNormTime * 20 ));
+        ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
     else if( m_State == gameWon )
     {
-        for( int i = 0; i < 8; i++ )
-        {
-            // TODO: change to player who wons color
-            ofSetColor(m_WinningColor * sin( m_StateNormTime * 30 ));
-            ofDrawLine(0,i+1,gameWidth,i+1);
-        }
-
-       DrawRings(gameWidth);
+        ofSetColor(m_WinningColor * sin( m_StateNormTime * 30 ));
+        ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
+    
+    DrawRings(gameWidth);
 
 }
 

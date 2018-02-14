@@ -43,15 +43,15 @@ void ofApp::setup() {
     ofBackground(0, 0, 0);                      // default background to black / LEDs off
     ofDisableAntiAliasing();                    // we need our graphics sharp for the LEDs
     ofSetVerticalSync(false);
-    ofSetFrameRate(60);
+    ofSetFrameRate(90);
     
     signal(SIGINT, sigint);
     setupButtons();
     
     // SYSTEM SETTINGS
     //--------------------------------------
-    stripWidth = 276;                            // pixel width of strip
-    stripHeight = 1;                            // pixel height of strip
+    stripWidth = 300;   // pixel width - keep this the logical length of the strip, not the actual pixels!!
+    stripHeight = 1;    // pixel height of strip
     stripsPerPort = 8;                          // total number of strips per port
     numPorts = 1;                               // total number of teensy ports?
     brightness = 200;                             // LED brightness
@@ -68,7 +68,7 @@ void ofApp::setup() {
     #endif
     
     // allocate our pixels, fbo, and texture
-    fbo.allocate(stripWidth, stripHeight*stripsPerPort*numPorts, GL_RGB);
+    fbo.allocate(stripWidth, stripHeight*stripsPerPort*numPorts*20, GL_RGB);
     
     setupMedia();
     
@@ -127,7 +127,7 @@ void ofApp::update()
 void ofApp::updateFbo()
 {    
     fbo.begin();                                // begins the fbo
-    ofClear(255,0,255);							// refreshes fbo, removes artifacts
+    ofClear(0,0,0);							// refreshes fbo, removes artifacts
     
     ofPushStyle();
     switch (drawModes)

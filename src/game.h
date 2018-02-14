@@ -57,6 +57,6 @@ class Game
         ofxOscSender oscSender;
 
 		// TODO: Osc reciever
-		ofxOscReceiver oscReciever;
+		ofxOscReceiver oscReceiver;
 };
 
