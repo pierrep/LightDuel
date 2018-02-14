@@ -87,7 +87,7 @@ void ofApp::exit()
     fbo.end();
 
     updateTeensy();
-
+    
     teensy.close();
     ofLogNotice() << "Exiting....";
 }
@@ -132,7 +132,7 @@ void ofApp::updateFbo()
     switch (drawModes)
     {
         case 0:            
-            game.draw(278,fbo.getHeight());
+            game.draw(fbo.getWidth(),fbo.getHeight());
             break;
         case 1:
             drawVideos();
@@ -142,10 +142,12 @@ void ofApp::updateFbo()
             break;
         case 3:
             drawDemos();
+            break;
         case 4:
             drawPong();
-        break;
+			break;
         default:
+			ofClear(0,0,0);
             break;
     }
 
