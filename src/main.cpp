@@ -7,7 +7,7 @@ int main( ){
 	#ifdef TARGET_RASPBERRY_PI
     ofSetupOpenGL(200,200,OF_WINDOW);			
     #else
-    ofSetupOpenGL(1200,800,OF_WINDOW);			
+    ofSetupOpenGL(1280,800,OF_WINDOW);
     #endif
 
 	// this kicks off the running of my app

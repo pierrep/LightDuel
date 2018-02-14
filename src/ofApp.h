@@ -35,6 +35,8 @@ class ofApp : public ofBaseApp{
         void enableVideo();
         void disableVideo();
         void drawPong();
+        void drawRawPixels();
+        void drawGamePixels();
         void showFPS();
         void setupButtons();
         void updateButtons();

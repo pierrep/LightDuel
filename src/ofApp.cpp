@@ -44,10 +44,10 @@ void ofApp::setup() {
     ofDisableAntiAliasing();                    // we need our graphics sharp for the LEDs
     ofSetVerticalSync(false);
     ofSetFrameRate(90);
-    
+
     signal(SIGINT, sigint);
     setupButtons();
-    
+
     // SYSTEM SETTINGS
     //--------------------------------------
     stripWidth = 300;   // pixel width - keep this the logical length of the strip, not the actual pixels!!
@@ -60,18 +60,18 @@ void ofApp::setup() {
     demoModes = 0;                              // default is draw white
 
     dir = 1;
-    
+
     #ifdef USE_TEENSY
     teensy.setup(stripWidth, stripHeight, stripsPerPort, numPorts);
     /* Configure our teensy boards (portName, xOffset, yOffset, width%, height%, direction) */
     teensy.serialConfigure("ttyACM0", 0, 0, 100, 100, 0);
     #endif
-    
+
     // allocate our pixels, fbo, and texture
     fbo.allocate(stripWidth, stripHeight*stripsPerPort*numPorts*20, GL_RGB);
-    
+
     setupMedia();
-    
+
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
@@ -87,7 +87,7 @@ void ofApp::exit()
     fbo.end();
 
     updateTeensy();
-    
+
     teensy.close();
     ofLogNotice() << "Exiting....";
 }
@@ -103,13 +103,13 @@ void ofApp::update()
     curTime = ofGetElapsedTimeMillis();
     game.Update((curTime - prevTime) * .001f , buttons);
     prevTime = curTime;
-	
+
     /*if(digitalRead(BUTTON_1) == 0) ofLog c() << "Button 1: Event counter: " << event_counter;
-	if(digitalRead(BUTTON_2) == 0) ofLogNotice() << "Button 2: Event counter: " << event_counter;
-	if(digitalRead(BUTTON_3) == 0) ofLogNotice() << "Button 3: Event counter: " << event_counter;
+    if(digitalRead(BUTTON_2) == 0) ofLogNotice() << "Button 2: Event counter: " << event_counter;
+    if(digitalRead(BUTTON_3) == 0) ofLogNotice() << "Button 3: Event counter: " << event_counter;
     if(digitalRead(BUTTON_4) == 0) ofLogNotice() << "Button 4: Event counter: " << event_counter;*/
-	
-	//ofLogNotice() << "Event counter: " << event_counter;
+
+    //ofLogNotice() << "Event counter: " << event_counter;
     //ofSetWindowTitle("TeensyOctoExample - "+ofToString(ofGetFrameRate()));
     ballpos+=dir*1.0f;
 
@@ -125,13 +125,13 @@ void ofApp::update()
 
 //--------------------------------------------------------------
 void ofApp::updateFbo()
-{    
+{
     fbo.begin();                                // begins the fbo
     ofClear(255,0,255);							// refreshes fbo, removes artifacts
-    
+
     switch (drawModes)
     {
-        case 0:            
+        case 0:
             game.draw(fbo.getWidth(),fbo.getHeight());
             break;
         case 1:
@@ -145,9 +145,9 @@ void ofApp::updateFbo()
             break;
         case 4:
             drawPong();
-			break;
+            break;
         default:
-			ofClear(0,0,0);
+            ofClear(0,0,0);
             break;
     }
 
@@ -171,40 +171,123 @@ void ofApp::draw()
     return;
     #endif
 
-    /*
-    teensy.draw(20,300);
+    bool bShowGamePixels =true;
 
-    ofSetColor(255);
-    ofDrawBitmapString("// Controls //", ofGetWidth()-250, 20);
-    ofDrawBitmapString("Brightness (up/down) == " + ofToString(brightness), ofGetWidth()-250, 80);
-    ofDrawBitmapString("Videos # == " + ofToString(dirVid.size()), ofGetWidth()-250, 120);
-    ofDrawBitmapString("Images # == " + ofToString(dirImg.size()), ofGetWidth()-250, 140);
-    */
+    if(bShowGamePixels) {
+        drawGamePixels();
+    } else {
+        drawRawPixels();
+    }
 
-   // fbo.readToPixels(guiPixels);
+}
 
-    ofColor colors;
+void ofApp::drawGamePixels()
+{
+    ofColor currentColour;
     ofPushMatrix();
     ofPushStyle();
     ofTranslate(20,200);
     ofSetRectMode(OF_RECTMODE_CENTER);
 
-    for (int y = 0; y < stripHeight*stripsPerPort*numPorts; y++)
+    int pixelWidth = 3;
+
+    ofSetColor(255);
+    ofDrawBitmapString("LANE 0",0,-15);
+    for (int y = 0; y < 2; y++)
     {
         for (int x = 0; x < stripWidth; x++)
         {
             ofPushMatrix();
-            colors = teensy.pixels1.getColor(x, y);
-            ofSetColor(colors);
-            ofTranslate(x*3, y*6 + (y/16*4)); //sections in groups
-            ofDrawRectangle(x, y, 3, 6);
+            currentColour = teensy.pixels1.getColor(x, y);
+            ofSetColor(currentColour);
+            ofTranslate(x*pixelWidth, y*pixelWidth*2 );
+            ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
+            ofPopMatrix();
+        }
+    }
+
+    ofTranslate(0,50);
+
+    ofSetColor(255);
+    ofDrawBitmapString("RING 0",0,5);
+    for (int y = 2; y < 4; y++)
+    {
+        for (int x = 0; x < 30; x++)
+        {
+            ofPushMatrix();
+            currentColour = teensy.pixels1.getColor(x, y);
+            ofSetColor(currentColour);
+            ofTranslate(x*pixelWidth, y*pixelWidth*2 );
+            ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
+            ofPopMatrix();
+        }
+    }
+
+    ofTranslate(0,100);
+
+    ofSetColor(255);
+    ofDrawBitmapString("LANE 1",0,15);
+    for (int y = 4; y < 6; y++)
+    {
+        //for (int x = stripWidth-1; x >= 0; x--)
+        for (int x = 0; x < stripWidth; x++)
+        {
+            ofPushMatrix();
+            currentColour = teensy.pixels1.getColor(stripWidth -1 - x, y);
+            ofSetColor(currentColour);
+            ofTranslate(x*pixelWidth, y*pixelWidth*2 );
+            ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
+            ofPopMatrix();
+        }
+    }
+
+    ofTranslate(0,50);
+
+    ofSetColor(255);
+    ofDrawBitmapString("RING 1",0,30);
+    for (int y = 6; y < 8; y++)
+    {
+        for (int x = 270; x < stripWidth; x++)
+        {
+            ofPushMatrix();
+            currentColour = teensy.pixels1.getColor(x, y);
+            ofSetColor(currentColour);
+            ofTranslate(x*pixelWidth, y*pixelWidth*2 );
+            ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
             ofPopMatrix();
         }
     }
     ofSetRectMode(OF_RECTMODE_CORNER);
     ofPopStyle();
     ofPopMatrix();
+}
 
+void ofApp::drawRawPixels()
+{
+    ofColor currentColour;
+    ofPushMatrix();
+    ofPushStyle();
+    ofTranslate(20,200);
+    ofSetRectMode(OF_RECTMODE_CENTER);
+
+    int pixelWidth = 3;
+
+    for (int y = 0; y < stripHeight*stripsPerPort; y++)
+    {
+        for (int x = 0; x < stripWidth; x++)
+        {
+            ofPushMatrix();
+            currentColour = teensy.pixels1.getColor(x, y);
+            ofSetColor(currentColour);
+            ofTranslate(x*pixelWidth, y*pixelWidth*2 );
+            ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
+            ofPopMatrix();
+        }
+    }
+
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofPopStyle();
+    ofPopMatrix();
 }
 
 void ofApp::drawPong()
@@ -239,7 +322,7 @@ void ofApp::drawDemos()
         case 4:
             teensy.drawWaves();
             break;
-            
+
         default:
             break;
     }
@@ -296,7 +379,7 @@ void ofApp::drawImages()
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+
     switch (key)
     {
         case '1':
@@ -317,7 +400,7 @@ void ofApp::keyPressed(int key){
             if (brightness > 255) brightness = 255;
             teensy.setBrightness(brightness);
             break;
-            
+
         case OF_KEY_DOWN:
             brightness -= 2;
             if (brightness < 0) brightness = 0;
@@ -336,34 +419,34 @@ void ofApp::keyPressed(int key){
             img[currentImage].load(dirImg.getPath(currentImage));
             break;
 
-        
+
         case '=':
             if (drawModes == 1) {
                 vid[currentVideo].stop();
             }
-            
+
             if (drawModes == 2) {
                 currentImage++;
                 if (currentImage > (int) dirImg.size()-1) currentImage = 0;
                 img[currentImage].load(dirImg.getPath(currentImage));
             }
             break;
-            
+
         case '-':
             if (drawModes == 1) {
                 vid[currentVideo].stop();
             }
-            
+
             if (drawModes == 2) {
                 currentImage--;
                 if (currentImage < 0) currentImage = (int) dirImg.size()-1;
                 img[currentImage].load(dirImg.getPath(currentImage));
             }
             break;
-            
+
         case 'd':
             disableVideo();
-            
+
             demoModes++;
             if (drawModes != 3) drawModes = 3;      // switch the draw mode to display demo mode.
             if (demoModes > 4) demoModes = 0;       // tap through the demo modes on each press.
@@ -391,7 +474,7 @@ void ofApp::keyReleased(int key)
                 vid[currentVideo].play();
             }                       // restart video at first frame
             break;
-            
+
         case '-':
             if (drawModes == 1) {
                 currentVideo--;
@@ -420,7 +503,7 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::setupMedia()
 {
-	ofLogNotice() << "Setting up media..." << endl;
+    ofLogNotice() << "Setting up media..." << endl;
     dirVid.listDir("videos/");
     dirVid.sort();
     //allocate the vector to have as many ofVidePlayer as files
@@ -443,9 +526,9 @@ void ofApp::setupMedia()
 //--------------------------------------------------------------
 void ofApp::showFPS()
 {
-	if(ofGetFrameNum()%30 == 0 ) {
-		ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
-	}
+    if(ofGetFrameNum()%30 == 0 ) {
+        ofLogNotice() << "FPS: " << ofToString(ofGetFrameRate());
+    }
 }
 
 //--------------------------------------------------------------

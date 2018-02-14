@@ -19,8 +19,9 @@ Game::Game()
      m_ServeDuration = 2;
      m_StateTimer = 0;
 
-	 _LeftLane._Index = 0;
-	 _RightLane._Index = 1;
+     _RightLane._Index = 0;
+     _LeftLane._Index = 1;
+     _LeftLane.m_LaneFlipped = true;
 
      #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
@@ -55,9 +56,9 @@ void Game::Update(float frameTime, Button buttons[])
 
     if( m_State == inPlay )
     {		
-		// Update lanes
-        _LeftLane.update(frameTime, buttons[0], buttons[1]);
-        _RightLane.update(frameTime, buttons[2], buttons[3]);
+		// Update lanes        
+        _RightLane.update(frameTime, buttons[0], buttons[3]);
+        _LeftLane.update(frameTime, buttons[2], buttons[1]);
 
 		// Check wins
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
