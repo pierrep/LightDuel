@@ -37,7 +37,7 @@ Game::Game()
      _LeftLane.m_Strip2YIndex = 6;
 #endif
 
-     _RightLane.m_LaneFlipped = true;
+	 _RightLane._LaneDrawFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -167,13 +167,13 @@ void Game::SetState( state state )
         if( m_P1Serve )
         {
             _LeftLane.m_Puck.ResetToStart();
-            _RightLane.m_Puck.ResetToEnd();
+			_RightLane.m_Puck.ResetToStart();
             m_P1Serve = false;
         }
         else
         {
             _LeftLane.m_Puck.ResetToEnd();
-            _RightLane.m_Puck.ResetToStart();
+            _RightLane.m_Puck.ResetToEnd();
             m_P1Serve = true;
         }
     }

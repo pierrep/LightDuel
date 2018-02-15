@@ -25,7 +25,7 @@ class Lane
 
         int m_PixelLength;
 
-        bool m_LaneFlipped = false;
+        bool _LaneDrawFlipped = false;
 
         int m_ReturnZonePixelLength;
         float m_ReturnZoneNormalized;

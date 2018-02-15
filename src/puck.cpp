@@ -49,12 +49,10 @@ void Puck::ResetToStart()
 
 void Puck::ResetToEnd()
 {
-
     m_NormalizedPosition = .95f;
     m_Direction = -1;
     m_IsDead = false;
     m_CurrentSpeed = m_StartSpeed;
-
 }
 
 void Puck::draw(int w, int h, int yRow )
