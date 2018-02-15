@@ -128,7 +128,7 @@ void ofApp::update()
 void ofApp::updateFbo()
 {
     fbo.begin();                                // begins the fbo
-    ofClear(255,0,255);							// refreshes fbo, removes artifacts
+    ofClear(0,0,0);							// refreshes fbo, removes artifacts
 
     switch (drawModes)
     {
