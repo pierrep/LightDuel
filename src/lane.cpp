@@ -4,8 +4,6 @@ Lane::Lane()
 {
     m_PixelLength = 280;
     m_ReturnZoneNormalized = 0.2f;
-    _NearReturnZoneBaseCol = ofColor::blue;
-    _FarReturnZoneBaseCol = ofColor::yellow;
 
     _NearScoredThisFrame = false;
     _FarScoredThisFrame = false;
@@ -30,10 +28,12 @@ void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, in
 }
 */
 
-void Lane::Init( Button* nearBtn, Button* farBtn)
+void Lane::Init( Button* nearBtn, Button* farBtn,ofColor NearPlayerCol, ofColor FarPlayerCol)
 {
 	_NearButton = nearBtn;
 	_FarButton = farBtn;
+    _NearPlayerCol = NearPlayerCol;
+    _FarPlayerCol = FarPlayerCol;
 }
 
 void Lane::Reset( )
@@ -89,33 +89,33 @@ void Lane::draw(int w, int h)
     if(m_LaneFlipped)
     {
         // Draw strip 1
-        ofSetColor(_NearReturnZoneBaseCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine(0,m_Strip1YIndex,m_ReturnZoneNormalized * w,m_Strip1YIndex);
 
-        ofSetColor(_FarReturnZoneBaseCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip1YIndex,1.0f * w,m_Strip1YIndex);
 
         // draw strip 2
-        ofSetColor(_NearReturnZoneBaseCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine(0,m_Strip2YIndex,m_ReturnZoneNormalized * w,m_Strip2YIndex);
 
-        ofSetColor(_FarReturnZoneBaseCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip2YIndex,1.0f * w,m_Strip2YIndex);
     }
     else
     {
         // Draw strip 1
-        ofSetColor(_FarReturnZoneBaseCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine(0,m_Strip1YIndex,m_ReturnZoneNormalized * w,m_Strip1YIndex);
 
-        ofSetColor(_NearReturnZoneBaseCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip1YIndex,1.0f * w,m_Strip1YIndex);
 
         // draw strip 2
-        ofSetColor(_FarReturnZoneBaseCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine(0,m_Strip2YIndex,m_ReturnZoneNormalized * w,m_Strip2YIndex);
 
-        ofSetColor(_NearReturnZoneBaseCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip2YIndex,1.0f * w,m_Strip2YIndex);
     }
 

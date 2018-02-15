@@ -23,7 +23,8 @@ Game::Game()
      _LeftLane._Index = 1;
     // _LeftLane.m_LaneFlipped = false;
 
-
+     _NearPlayerCol = ofColor::yellow;
+     _FarPlayerCol = ofColor::blue;
 
 #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
@@ -42,8 +43,6 @@ Game::Game()
 	// _LeftLane._Game = this;
 	// _RightLane._Game = this;
 	 
-     _NearPlayerCol = ofColor::blue;
-     _FarPlayerCol = ofColor::yellow;
 }
 
 void Game::Setup(Button buttons[])
@@ -52,8 +51,8 @@ void Game::Setup(Button buttons[])
     oscSender.setup(HOST,PORT);
 	oscReceiver.setup(PORT);
 	
-    _LeftLane.Init(&buttons[0], &buttons[3]);
-    _RightLane.Init(&buttons[2], &buttons[1]);
+    _LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol,_FarPlayerCol);
+    _RightLane.Init(&buttons[3], &buttons[0], _NearPlayerCol,_FarPlayerCol);
 }
 
 void Game::Update(float frameTime, Button buttons[])
