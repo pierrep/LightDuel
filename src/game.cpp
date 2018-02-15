@@ -22,8 +22,8 @@ Game::Game()
      _RightLane._Index = 0;
      _LeftLane._Index = 1;
 
-     _NearPlayerCol = ofColor::yellow;
-     _FarPlayerCol = ofColor::blue;
+     _NearPlayerCol = ofColor::blue;
+     _FarPlayerCol = ofColor::yellow;
 
 #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
@@ -37,7 +37,7 @@ Game::Game()
      _LeftLane.m_Strip2YIndex = 6;
 #endif
 
-	 _RightLane.m_LaneFlipped = true;
+     _RightLane.m_LaneFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;

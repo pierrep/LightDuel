@@ -89,33 +89,33 @@ void Lane::draw(int w, int h)
     if(m_LaneFlipped)
     {
         // Draw strip 1
-        ofSetColor(_NearPlayerCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine(0,m_Strip1YIndex,m_ReturnZoneNormalized * w,m_Strip1YIndex);
 
-        ofSetColor(_FarPlayerCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip1YIndex,1.0f * w,m_Strip1YIndex);
 
         // draw strip 2
-        ofSetColor(_NearPlayerCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine(0,m_Strip2YIndex,m_ReturnZoneNormalized * w,m_Strip2YIndex);
 
-        ofSetColor(_FarPlayerCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip2YIndex,1.0f * w,m_Strip2YIndex);
     }
     else
     {
         // Draw strip 1
-        ofSetColor(_FarPlayerCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine(0,m_Strip1YIndex,m_ReturnZoneNormalized * w,m_Strip1YIndex);
 
-        ofSetColor(_NearPlayerCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip1YIndex,1.0f * w,m_Strip1YIndex);
 
         // draw strip 2
-        ofSetColor(_FarPlayerCol * .7f);
+        ofSetColor(_NearPlayerCol * .7f);
         ofDrawLine(0,m_Strip2YIndex,m_ReturnZoneNormalized * w,m_Strip2YIndex);
 
-        ofSetColor(_NearPlayerCol * .7f);
+        ofSetColor(_FarPlayerCol * .7f);
         ofDrawLine((1.0f - m_ReturnZoneNormalized) * w,m_Strip2YIndex,1.0f * w,m_Strip2YIndex);
     }
 
