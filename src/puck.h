@@ -10,7 +10,7 @@ class Puck
         void update( float frameTime);
         void ResetToStart();
         void ResetToEnd();
-        void draw(int width, int height, int yRow);
+        void draw(int width, int height, int yRow, bool flipped);
 
         float m_Direction;
         float m_StartSpeed;    // Speed that it starts at at the beginning of each round

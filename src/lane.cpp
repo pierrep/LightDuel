@@ -119,6 +119,6 @@ void Lane::draw(int w, int h)
     }
 
 	// Draw pucks
-    m_Puck.draw(w,h, m_Strip1YIndex);
-    m_Puck.draw(w,h, m_Strip2YIndex);
+    m_Puck.draw(w,h, m_Strip1YIndex, _LaneDrawFlipped);
+    m_Puck.draw(w,h, m_Strip2YIndex, _LaneDrawFlipped);
 }

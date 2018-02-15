@@ -55,10 +55,15 @@ void Puck::ResetToEnd()
     m_CurrentSpeed = m_StartSpeed;
 }
 
-void Puck::draw(int w, int h, int yRow )
+void Puck::draw(int w, int h, int yRow, bool flipped )
 {
     ofSetColor(ofColor::white);
-    ofDrawLine( (m_NormalizedPosition - (m_NormalizedWidth/2.0f)) * w,yRow,( m_NormalizedPosition + (m_NormalizedWidth/2.0f)) * w,yRow);
+
+	float norm = m_NormalizedPosition;
+
+	if (flipped) norm = 1 - m_NormalizedPosition;
+
+    ofDrawLine( (norm - (m_NormalizedWidth/2.0f)) * w,yRow,(norm + (m_NormalizedWidth/2.0f)) * w,yRow);
     //ofDrawLine( .4f * w,yRow, .6f * w,yRow);
 }
 
