@@ -58,5 +58,9 @@ class Game
 
 		// TODO: Osc reciever
 		ofxOscReceiver oscReceiver;
+
+		string _StateOSCAdd = "/lightduel/state";			// sends state as index of enum
+		string _ButtonPressOSCAdd = "/lightduel/button";	// sends btn index and hit puck as int 0 or 1
+
 };
 

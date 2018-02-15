@@ -23,7 +23,7 @@ Game::Game()
      _LeftLane._Index = 1;
     // _LeftLane.m_LaneFlipped = false;
 
-     #ifdef TARGET_RASPBERRY_PI
+#ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
      _RightLane.m_Strip2YIndex = 1;
      _LeftLane.m_Strip1YIndex = 4;
@@ -53,7 +53,6 @@ void Game::Setup(Button buttons[])
 
 void Game::Update(float frameTime, Button buttons[])
 {
-
     if( m_State == inPlay )
     {		
 		// Update lanes        
@@ -128,11 +127,10 @@ void Game::Update(float frameTime, Button buttons[])
 
 void Game::ButtonPressed(int btnIndex, bool hitPuck)
 {
-	// concat address string using button index
-	string address = "/button" + btnIndex;
-
 	ofxOscMessage m;
-	m.setAddress(address);
+	m.setAddress(_ButtonPressOSCAdd);
+
+	m.addInt32Arg(btnIndex);
 
 	if (hitPuck)
 	{
@@ -143,8 +141,7 @@ void Game::ButtonPressed(int btnIndex, bool hitPuck)
 		m.addIntArg(0);
 	}
 	
-	oscSender.sendMessage(m);
-	
+	oscSender.sendMessage(m);	
 }
 
 void Game::SetState( state state )
@@ -182,12 +179,17 @@ void Game::SetState( state state )
     }
     else if( m_State == roundWon )
     {
-        m_StateTimer = 0;\
+        m_StateTimer = 0;
     }
     else if( m_State == gameWon )
     {
         m_StateTimer = 0;
     }
+
+	ofxOscMessage m;
+	m.setAddress(_StateOSCAdd);
+	m.adds.addInt32Arg((int)m_State);
+	oscSender.sendMessage(m);
 }
 
 void Game::ResetGame()
