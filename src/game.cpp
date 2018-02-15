@@ -19,8 +19,8 @@ Game::Game()
      m_ServeDuration = 2;
      m_StateTimer = 0;
 
-     _RightLane._Index = 0;
-     _LeftLane._Index = 1;
+	 _LeftLane._Index = 0;
+	 _RightLane._Index = 1;
 
      _NearPlayerCol = ofColor::blue;
      _FarPlayerCol = ofColor::yellow;
@@ -37,7 +37,7 @@ Game::Game()
      _LeftLane.m_Strip2YIndex = 6;
 #endif
 
-	 //_RightLane._LaneDrawFlipped = true;
+	 _LeftLane._LaneDrawFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
@@ -50,9 +50,9 @@ void Game::Setup(Button buttons[])
 	// Setup OSC
     oscSender.setup(HOST,PORT);
 	oscReceiver.setup(PORT);
-	
-    _LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol,_FarPlayerCol);
+	   
     _RightLane.Init(&buttons[3], &buttons[0], _NearPlayerCol,_FarPlayerCol);
+	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol);
 }
 
 void Game::Update(float frameTime, Button buttons[])

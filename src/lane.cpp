@@ -85,7 +85,6 @@ void Lane::update(float frameTime)
 
 void Lane::draw(int w, int h)
 {
-
     if(_LaneDrawFlipped)
     {
         // Draw strip 1
