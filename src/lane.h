@@ -7,7 +7,7 @@ class Lane
     public:
         Lane();
 		
-		void Init(Button nearBtn, Button farBtn);
+        void Init(Button* nearBtn, Button* farBtn);
        // void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone, Button nearBtn, Button farBtn);
         void draw(int width, int height);
         void update(float frameTime);
@@ -32,8 +32,8 @@ class Lane
 
 		int _Index;
 
-		Button _NearButton;
-		Button _FarButton;
+        Button* _NearButton;
+        Button* _FarButton;
 
         ofColor _NearReturnZoneBaseCol;
         ofColor _NearReturnZoneCurrentCol;

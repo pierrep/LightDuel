@@ -52,8 +52,8 @@ void Game::Setup(Button buttons[])
     oscSender.setup(HOST,PORT);
 	oscReceiver.setup(PORT);
 	
-	_LeftLane.Init(buttons[0], buttons[3]);
-	_RightLane.Init(buttons[2], buttons[1]);	
+    _LeftLane.Init(&buttons[0], &buttons[3]);
+    _RightLane.Init(&buttons[2], &buttons[1]);
 }
 
 void Game::Update(float frameTime, Button buttons[])
@@ -193,7 +193,7 @@ void Game::SetState( state state )
 
 	ofxOscMessage m;
 	m.setAddress(_StateOSCAdd);
-	m.adds.addInt32Arg((int)m_State);
+    m.addInt32Arg((int)m_State);
 	oscSender.sendMessage(m);
 }
 

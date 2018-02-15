@@ -30,7 +30,7 @@ void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, in
 }
 */
 
-void Lane::Init( Button nearBtn, Button farBtn)
+void Lane::Init( Button* nearBtn, Button* farBtn)
 {
 	_NearButton = nearBtn;
 	_FarButton = farBtn;
@@ -61,7 +61,7 @@ void Lane::update(float frameTime)
     {
 		// Check to see if buttons are pressed within the normalized zones
 		// Player 1 is on the 0 end of the normalized strip 
-        if(_NearButton.isPressedThisFrame())
+        if(_NearButton->isPressedThisFrame())
         {
 			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized)
 			{
@@ -72,7 +72,7 @@ void Lane::update(float frameTime)
         }
 
 		// Player 2 is on the 1 side of the normalized strip
-        if(_FarButton.isPressedThisFrame())
+        if(_FarButton->isPressedThisFrame())
         {			
 			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized)
 			{
