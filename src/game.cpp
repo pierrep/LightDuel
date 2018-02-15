@@ -51,7 +51,7 @@ void Game::Setup(Button buttons[])
     oscSender.setup(HOST,PORT);
 	oscReceiver.setup(PORT);
 	   
-    _RightLane.Init(&buttons[3], &buttons[0], _NearPlayerCol,_FarPlayerCol);
+    _RightLane.Init(&buttons[0], &buttons[3], _NearPlayerCol,_FarPlayerCol);
 	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol);
 }
 
