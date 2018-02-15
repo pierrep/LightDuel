@@ -21,7 +21,6 @@ Game::Game()
 
      _RightLane._Index = 0;
      _LeftLane._Index = 1;
-    // _LeftLane.m_LaneFlipped = false;
 
      _NearPlayerCol = ofColor::yellow;
      _FarPlayerCol = ofColor::blue;
@@ -37,7 +36,8 @@ Game::Game()
      _LeftLane.m_Strip1YIndex = 5;
      _LeftLane.m_Strip2YIndex = 6;
 #endif
-     _LeftLane.m_LaneFlipped = true;
+
+	 _RightLane.m_LaneFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
