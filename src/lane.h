@@ -7,9 +7,10 @@ class Lane
     public:
         Lane();
 		
-        void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone);
+		void Init(Button nearBtn, Button farBtn);
+       // void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone, Button nearBtn, Button farBtn);
         void draw(int width, int height);
-        void update(float frameTime, Button buttonNear, Button buttonFar);
+        void update(float frameTime);
 
         void Reset();
 
@@ -30,6 +31,9 @@ class Lane
         float m_ReturnZoneNormalized;
 
 		int _Index;
+
+		Button _NearButton;
+		Button _FarButton;
 
         ofColor _NearReturnZoneBaseCol;
         ofColor _NearReturnZoneCurrentCol;

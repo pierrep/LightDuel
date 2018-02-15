@@ -12,7 +12,8 @@ Lane::Lane()
 
 }
 
-void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y, bool flipReturnCol )
+/*
+void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y, bool flipReturnCol, Button nearBtn, Button farBtn )
 {
     _NearReturnZoneBaseCol = returnzone1col;
     _FarReturnZoneBaseCol = returnzone2col;
@@ -23,6 +24,16 @@ void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, in
     m_ReturnZonePixelLength = m_PixelLength * m_ReturnZoneNormalized;
 
     m_LaneFlipped = flipReturnCol;
+
+	_NearButton = nearBtn;
+	_FarButton = farBtn;
+}
+*/
+
+void Lane::Init( Button nearBtn, Button farBtn)
+{
+	_NearButton = nearBtn;
+	_FarButton = farBtn;
 }
 
 void Lane::Reset( )
@@ -32,7 +43,7 @@ void Lane::Reset( )
     m_ReturnZoneNormalized = .2f;
 }
 
-void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
+void Lane::update(float frameTime)
 {
 	// Updates the puck position
     m_Puck.update(frameTime);
@@ -50,7 +61,7 @@ void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
     {
 		// Check to see if buttons are pressed within the normalized zones
 		// Player 1 is on the 0 end of the normalized strip 
-        if(buttonNear.isPressedThisFrame())
+        if(_NearButton.isPressedThisFrame())
         {
 			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized)
 			{
@@ -61,7 +72,7 @@ void Lane::update(float frameTime, Button buttonNear, Button buttonFar)
         }
 
 		// Player 2 is on the 1 side of the normalized strip
-        if(buttonFar.isPressedThisFrame())
+        if(_FarButton.isPressedThisFrame())
         {			
 			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized)
 			{

@@ -23,6 +23,8 @@ Game::Game()
      _LeftLane._Index = 1;
     // _LeftLane.m_LaneFlipped = false;
 
+
+
 #ifdef TARGET_RASPBERRY_PI
      _RightLane.m_Strip1YIndex = 0;
      _RightLane.m_Strip2YIndex = 1;
@@ -49,6 +51,9 @@ void Game::Setup(Button buttons[])
 	// Setup OSC
     oscSender.setup(HOST,PORT);
 	oscReceiver.setup(PORT);
+	
+	_LeftLane.Init(buttons[0], buttons[3]);
+	_RightLane.Init(buttons[2], buttons[1]);	
 }
 
 void Game::Update(float frameTime, Button buttons[])
@@ -56,8 +61,8 @@ void Game::Update(float frameTime, Button buttons[])
     if( m_State == inPlay )
     {		
 		// Update lanes        
-        _RightLane.update(frameTime, buttons[2], buttons[1]);
-        _LeftLane.update(frameTime, buttons[0], buttons[3]);
+        _RightLane.update(frameTime);
+        _LeftLane.update(frameTime);
 
 		// Check wins
         if(_LeftLane._FarScoredThisFrame || _RightLane._NearScoredThisFrame)
