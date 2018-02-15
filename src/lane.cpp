@@ -86,7 +86,7 @@ void Lane::update(float frameTime)
 void Lane::draw(int w, int h)
 {
 
-    if(m_LaneFlipped)
+    if(_LaneDrawFlipped)
     {
         // Draw strip 1
         ofSetColor(_NearPlayerCol * .7f);

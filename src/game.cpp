@@ -37,7 +37,7 @@ Game::Game()
      _LeftLane.m_Strip2YIndex = 6;
 #endif
 
-	 _RightLane.m_LaneFlipped = true;
+	 _RightLane._LaneDrawFlipped = true;
 
 	 // Pass the lanes a ref to the game
 	// _LeftLane._Game = this;
