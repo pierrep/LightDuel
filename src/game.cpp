@@ -245,7 +245,7 @@ void Game::draw(int gameWidth, int gameHeight)
 
     if( m_State == idle )
     {
-		ofSetColor(ofColor::white);
+        ofSetColor(ofColor::black);
 		ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
     else if( m_State == waitingToServe )
