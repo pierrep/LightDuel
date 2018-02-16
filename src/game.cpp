@@ -2,9 +2,6 @@
 #include "button.h"
 #include "ofApp.h"
 
-#define HOST "127.0.0.1"
-#define PORT 10001
-
 Game::Game()
 {
     // debuggin installation with no button presses
