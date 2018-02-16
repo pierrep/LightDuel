@@ -2,11 +2,15 @@
 #include "lane.h"
 #include "button.h"
 #include "ofxOsc.h"
+#include "ofApp.h"
+
 
 class Game
 {
     public:
         Game();
+
+		ofApp _OfApp;
 
         enum state { idle, waitingToServe, inPlay, roundWon, gameWon };
 		enum player { p1, p2 };
@@ -15,12 +19,12 @@ class Game
         state m_State;
 
 		// Methods
-        void Setup(Button buttons[]);
+        void Setup(Button buttons[], ofApp ofApp);
         void Update(float deltaTime, Button buttons[]);
         void ResetGame();
         void DrawRings(int gameWidth);
 
-		void ButtonPressed(int btnIndex, bool hitPuck);		
+		void ButtonPressed(int laneIndex, int nearFar, int hitMiss);
 
         void SetState( state state );
 
@@ -29,6 +33,8 @@ class Game
 		// Lane definitions
         Lane _LeftLane;
         Lane _RightLane;
+
+		int _RallyLength;
 
 		// Colours
         ofColor m_WinningColor;

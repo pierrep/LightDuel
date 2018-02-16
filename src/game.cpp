@@ -1,6 +1,6 @@
 #include "game.h"
 #include "button.h"
-
+#include "ofApp.h"
 
 #define HOST "127.0.0.1"
 #define PORT 10001
@@ -40,10 +40,12 @@ Game::Game()
 	 _RightLane._LaneDrawFlipped = true;
 }
 
-void Game::Setup(Button buttons[])
+void Game::Setup(Button buttons[], ofApp ofApp)
 {
-    _RightLane.Init(&buttons[0], &buttons[3], _NearPlayerCol,_FarPlayerCol);
-	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol);
+    _RightLane.Init(&buttons[0], &buttons[3], _NearPlayerCol,_FarPlayerCol, this);
+	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol, this);
+
+	_OfApp = ofApp;
 }
 
 void Game::Update(float frameTime, Button buttons[])
@@ -54,22 +56,51 @@ void Game::Update(float frameTime, Button buttons[])
         _RightLane.update(frameTime);
         _LeftLane.update(frameTime);
 
+		// OSC for pucks
+		_OfApp.SendPuckPositions(_LeftLane.m_Puck, _RightLane.m_Puck);
+
 		// Check wins
-        if(_LeftLane._FarScoredThisFrame || _RightLane._NearScoredThisFrame)
+        if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
         {
             m_WinningColor = _NearPlayerCol;
             _NearPlayerScore++;
 
-            if( _NearPlayerScore >= _RoundsPerGame)	SetState( gameWon );
-            else									SetState( roundWon );
+			if (_NearPlayerScore >= _RoundsPerGame)
+			{
+				_OfApp.SendGameWon(0, _RallyLength);
+
+				SetState(gameWon);
+			}
+			else
+			{
+				if (_LeftLane._NearScoredThisFrame)
+					_OfApp.SendRoundWon(0, 0, _RallyLength);
+				else
+					_OfApp.SendRoundWon(0, 1, _RallyLength);
+
+				SetState(roundWon);
+			}
         }
-        else if(_LeftLane._NearScoredThisFrame || _RightLane._FarScoredThisFrame)
+        else if(_LeftLane._FarScoredThisFrame || _RightLane._FarScoredThisFrame)
         {
              m_WinningColor = _FarPlayerCol;
             _FarPlayerScore++;
 
-            if( _FarPlayerScore >= _RoundsPerGame)	SetState(gameWon);              
-            else									SetState(roundWon);                
+			if (_FarPlayerScore >= _RoundsPerGame)
+			{
+				_OfApp.SendGameWon(1, _RallyLength);
+
+				SetState(gameWon);
+			}
+			else
+			{
+				if (_LeftLane._NearScoredThisFrame)
+					_OfApp.SendRoundWon(1, 0, _RallyLength);
+				else
+					_OfApp.SendRoundWon(1, 1, _RallyLength);
+
+				SetState(roundWon);
+			}
         }       
     }
     else if( m_State == waitingToServe )
@@ -103,6 +134,8 @@ void Game::Update(float frameTime, Button buttons[])
     }
     else if( m_State == idle )
     {
+		_OfApp.SendGameFinished();
+
         // Check if enough buttons are held down to transition out of idle state
         int buttonsDown = 0;
 
@@ -120,27 +153,10 @@ void Game::Update(float frameTime, Button buttons[])
     }
 }
 
-void Game::ButtonPressed(int btnIndex, bool hitPuck)
+void Game::ButtonPressed(int laneIndex, int nearFar, int hitMiss)
 {
-	/*
-	ofxOscMessage m;
-	m.setAddress(_ButtonPressOSCAdd);
-
-	m.addInt32Arg(btnIndex);
-
-	if (hitPuck)
-	{
-		m.addIntArg(1);
-	}
-	else if(!hitPuck)
-	{
-		m.addIntArg(0);
-	}
+	_OfApp.SendButtonPress(laneIndex, nearFar, hitMiss);
 	
-	oscSender.sendMessage(m);	
-	*/
-
-	//TODO call send from ofapp
 }
 
 void Game::SetState( state state )
@@ -183,6 +199,7 @@ void Game::SetState( state state )
     else if( m_State == gameWon )
     {
         m_StateTimer = 0;
+		
     }
 
 }

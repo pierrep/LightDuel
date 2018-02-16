@@ -1,4 +1,5 @@
 #include "lane.h"
+#include "game.h"
 
 Lane::Lane()
 {
@@ -28,12 +29,13 @@ void Lane::init( ofColor returnzone1col, ofColor returnzone2col, int strip1Y, in
 }
 */
 
-void Lane::Init( Button* nearBtn, Button* farBtn,ofColor NearPlayerCol, ofColor FarPlayerCol)
+void Lane::Init( Button* nearBtn, Button* farBtn,ofColor NearPlayerCol, ofColor FarPlayerCol, Game* game)
 {
 	_NearButton = nearBtn;
 	_FarButton = farBtn;
     _NearPlayerCol = NearPlayerCol;
     _FarPlayerCol = FarPlayerCol;
+	_Game = game;
 }
 
 void Lane::Reset( )
@@ -68,6 +70,12 @@ void Lane::update(float frameTime)
 				ofLogNotice() << "Near return on lane:" << _Index;
 
 				m_Puck.ReturnPuck();
+
+				_Game.ButtonPressed(_Index, 0, 1);
+			}
+			else
+			{
+				_Game.ButtonPressed(_Index, 0, 0);
 			}
         }
 
@@ -78,7 +86,13 @@ void Lane::update(float frameTime)
 			{
 				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
-			}			
+
+				_Game.ButtonPressed(_Index, 1, 1);
+			}
+			else
+			{
+				_Game.ButtonPressed(_Index, 1, 0);
+			}				
         }
     }
 }

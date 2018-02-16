@@ -81,7 +81,7 @@ void ofApp::setup() {
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
-    game.Setup(buttons);
+    game.Setup(buttons, this);
 }
 
 void ofApp::exit()
@@ -685,12 +685,7 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 		{
 			ofLogNotice() << "OSC ----- Reset game recieved:";
 			game.ResetGame();
-		}
-		else if (m.getAddress() == _GameFinishedOSCAdd)
-		{
-			ofLogNotice() << "OSC ----- Game finsihed recieved:";
-
-		}
+		}		
 	}
 }
 
