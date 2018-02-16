@@ -1,14 +1,15 @@
 #pragma once
 #include "button.h"
 #include "puck.h"
-#include "game.h"
+
+class Game;
 
 class Lane
 {
     public:
         Lane();
 
-		game _Game;
+        Game* _Game;
 		
         void Init(Button* nearBtn, Button* farBtn, ofColor _NearPlayerCol, ofColor _FarPlayerCol, Game* _Game);
        // void init(  ofColor returnzone1col, ofColor returnzone2col, int strip1Y, int strip2Y , bool flipColReturnZone, Button nearBtn, Button farBtn);

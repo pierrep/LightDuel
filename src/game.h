@@ -2,7 +2,8 @@
 #include "lane.h"
 #include "button.h"
 #include "ofxOsc.h"
-#include "ofApp.h"
+
+class ofApp;
 
 
 class Game
@@ -10,7 +11,7 @@ class Game
     public:
         Game();
 
-		ofApp _OfApp;
+        ofApp* _ofApp;
 
         enum state { idle, waitingToServe, inPlay, roundWon, gameWon };
 		enum player { p1, p2 };
@@ -19,7 +20,7 @@ class Game
         state m_State;
 
 		// Methods
-        void Setup(Button buttons[], ofApp ofApp);
+        void Setup(Button buttons[], ofApp* ofApp);
         void Update(float deltaTime, Button buttons[]);
         void ResetGame();
         void DrawRings(int gameWidth);

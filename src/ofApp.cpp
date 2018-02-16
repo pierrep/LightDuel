@@ -6,6 +6,10 @@
 #define BUTTON_3 6
 #define BUTTON_4 4
 
+//#define HOST "172.24.1.20"
+#define HOST "localhost"
+#define PORT 10001
+
 volatile int do_exit = 0;
 
 void sigint(int sig)
@@ -80,6 +84,9 @@ void ofApp::setup() {
 
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
+
+    oscSender.setup(HOST,PORT);
+    oscReceiver.setup(PORT);
 
     game.Setup(buttons, this);
 }

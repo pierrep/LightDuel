@@ -71,11 +71,11 @@ void Lane::update(float frameTime)
 
 				m_Puck.ReturnPuck();
 
-				_Game.ButtonPressed(_Index, 0, 1);
+                _Game->ButtonPressed(_Index, 0, 1);
 			}
 			else
 			{
-				_Game.ButtonPressed(_Index, 0, 0);
+                _Game->ButtonPressed(_Index, 0, 0);
 			}
         }
 
@@ -87,11 +87,11 @@ void Lane::update(float frameTime)
 				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
 
-				_Game.ButtonPressed(_Index, 1, 1);
+                _Game->ButtonPressed(_Index, 1, 1);
 			}
 			else
 			{
-				_Game.ButtonPressed(_Index, 1, 0);
+                _Game->ButtonPressed(_Index, 1, 0);
 			}				
         }
     }
