@@ -619,18 +619,18 @@ void ofApp::dragEvent(ofDragInfo dragInfo){}
 
 // ----------------OSC--------------------------------
 // Admin
-static string _GetSettingsOSCAdd = "/lightduel/getsettings";
-static string _SetSettingsOSCAdd = "/lightduel/setsettings";
-static string _NewGameOSCAdd = "/lightduel/newgame";
-static string _ResetGameOSCAdd = "/lightduel/resetgame";
-static string _GameFinishedOSCAdd = "/lightduel/gamefinished";// Sent when game is over so we know we are ready for new users
+string ofApp::_GetSettingsOSCAdd = "/lightduel/getsettings";
+string ofApp::_SetSettingsOSCAdd = "/lightduel/setsettings";
+string ofApp::_NewGameOSCAdd = "/lightduel/newgame";
+string ofApp::_ResetGameOSCAdd = "/lightduel/resetgame";
+string ofApp::_GameFinishedOSCAdd = "/lightduel/gamefinished";// Sent when game is over so we know we are ready for new users
 
 // Events and states
-static string _ButtonPressOSCAdd = "/lightduel/button";		//[int - laneIndex] [int - near/far 0/1]  [int - 0 for miss 1 for hit]
-static string _RoundWonOSCAdd = "/lightduel/roundwon";		//[int - player index] [int - lane index] [int - rally length]
-static string _GameWonOSCAdd = "/lightduel/gamewon";		//[int - player index]  [int - total rally length]
-static string _Lane0PuckOSCAdd = "/lightduel/puck0"; //[float - normalized pos]
-static string _Lane1PuckOSCAdd = "/lightduel/puck1"; //[float - normalized pos]
+string ofApp::_ButtonPressOSCAdd = "/lightduel/button";		//[int - laneIndex] [int - near/far 0/1]  [int - 0 for miss 1 for hit]
+string ofApp::_RoundWonOSCAdd = "/lightduel/roundwon";		//[int - player index] [int - lane index] [int - rally length]
+string ofApp::_GameWonOSCAdd = "/lightduel/gamewon";		//[int - player index]  [int - total rally length]
+string ofApp::_Lane0PuckOSCAdd = "/lightduel/puck0"; //[float - normalized pos]
+string ofApp::_Lane1PuckOSCAdd = "/lightduel/puck1"; //[float - normalized pos]
 
 void ofApp::ListenForOSC()  // Gets  the games settings
 {
@@ -638,7 +638,7 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 	{
 		// get the next message
 		ofxOscMessage m;
-		oscReceiver.getNextMessage(&m);
+        oscReceiver.getNextMessage(m);
 
 		if (m.getAddress() == _GetSettingsOSCAdd)
 		{
