@@ -8,7 +8,6 @@ Lane::Lane()
 
     _NearScoredThisFrame = false;
     _FarScoredThisFrame = false;
-
 }
 
 /*
@@ -67,7 +66,7 @@ void Lane::update(float frameTime)
 		// Player 1 is on the 0 end of the normalized strip 
         if(_NearButton->isPressedThisFrame())
         {
-			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized)
+			if (m_Puck.m_NormalizedPosition - (m_Puck.m_NormalizedWidth / 2.0f) < m_ReturnZoneNormalized && m_Puck.m_Direction < 0)
 			{
 				ofLogNotice() << "Near return on lane:" << _Index;
 
@@ -84,7 +83,7 @@ void Lane::update(float frameTime)
 		// Player 2 is on the 1 side of the normalized strip
         if(_FarButton->isPressedThisFrame())
         {			
-			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized)
+			if (m_Puck.m_NormalizedPosition + (m_Puck.m_NormalizedWidth / 2.0f) > 1 - m_ReturnZoneNormalized && m_Puck.m_Direction > 0)
 			{
 				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
