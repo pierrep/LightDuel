@@ -8,7 +8,8 @@
 
 //#define HOST "172.24.1.20"
 #define HOST "localhost"
-#define PORT 10001
+#define RECEIVE_PORT 10001
+#define SEND_PORT 10002
 
 volatile int do_exit = 0;
 
@@ -85,8 +86,8 @@ void ofApp::setup() {
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
-    oscSender.setup(HOST,PORT);
-    oscReceiver.setup(PORT);
+    oscSender.setup(HOST,RECEIVE_PORT);
+    oscReceiver.setup(SEND_PORT);
 
     game.Setup(buttons, this);
 }
@@ -108,6 +109,7 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+
     showFPS();
     if(do_exit == 1) {exit();std::exit(1);}
 
@@ -603,7 +605,8 @@ void ofApp::updateButtons()
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){}
+void ofApp::mouseMoved(int x, int y ){
+}
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){}

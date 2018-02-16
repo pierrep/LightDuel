@@ -134,7 +134,9 @@ void Game::Update(float frameTime, Button buttons[])
     }
     else if( m_State == idle )
     {
-        _ofApp->SendGameFinished();
+        if(ofGetFrameNum()%180 == 0) {
+            _ofApp->SendGameFinished();
+        }
 
         // Check if enough buttons are held down to transition out of idle state
         int buttonsDown = 0;
