@@ -40,12 +40,12 @@ Game::Game()
 	 _RightLane._LaneDrawFlipped = true;
 }
 
-void Game::Setup(Button buttons[], ofApp ofApp)
+void Game::Setup(Button buttons[], ofApp* ofApp)
 {
     _RightLane.Init(&buttons[0], &buttons[3], _NearPlayerCol,_FarPlayerCol, this);
 	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol, this);
 
-	_OfApp = ofApp;
+	_ofApp = ofApp;
 }
 
 void Game::Update(float frameTime, Button buttons[])
@@ -57,7 +57,7 @@ void Game::Update(float frameTime, Button buttons[])
         _LeftLane.update(frameTime);
 
 		// OSC for pucks
-		_OfApp.SendPuckPositions(_LeftLane.m_Puck, _RightLane.m_Puck);
+        _ofApp->SendPuckPositions(_LeftLane.m_Puck, _RightLane.m_Puck);
 
 		// Check wins
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
@@ -67,16 +67,16 @@ void Game::Update(float frameTime, Button buttons[])
 
 			if (_NearPlayerScore >= _RoundsPerGame)
 			{
-				_OfApp.SendGameWon(0, _RallyLength);
+                _ofApp->SendGameWon(0, _RallyLength);
 
 				SetState(gameWon);
 			}
 			else
 			{
 				if (_LeftLane._NearScoredThisFrame)
-					_OfApp.SendRoundWon(0, 0, _RallyLength);
+                    _ofApp->SendRoundWon(0, 0, _RallyLength);
 				else
-					_OfApp.SendRoundWon(0, 1, _RallyLength);
+                    _ofApp->SendRoundWon(0, 1, _RallyLength);
 
 				SetState(roundWon);
 			}
@@ -88,16 +88,16 @@ void Game::Update(float frameTime, Button buttons[])
 
 			if (_FarPlayerScore >= _RoundsPerGame)
 			{
-				_OfApp.SendGameWon(1, _RallyLength);
+                _ofApp->SendGameWon(1, _RallyLength);
 
 				SetState(gameWon);
 			}
 			else
 			{
 				if (_LeftLane._NearScoredThisFrame)
-					_OfApp.SendRoundWon(1, 0, _RallyLength);
+                    _ofApp->SendRoundWon(1, 0, _RallyLength);
 				else
-					_OfApp.SendRoundWon(1, 1, _RallyLength);
+                    _ofApp->SendRoundWon(1, 1, _RallyLength);
 
 				SetState(roundWon);
 			}
@@ -134,7 +134,7 @@ void Game::Update(float frameTime, Button buttons[])
     }
     else if( m_State == idle )
     {
-		_OfApp.SendGameFinished();
+        _ofApp->SendGameFinished();
 
         // Check if enough buttons are held down to transition out of idle state
         int buttonsDown = 0;
@@ -155,7 +155,7 @@ void Game::Update(float frameTime, Button buttons[])
 
 void Game::ButtonPressed(int laneIndex, int nearFar, int hitMiss)
 {
-	_OfApp.SendButtonPress(laneIndex, nearFar, hitMiss);
+    _ofApp->SendButtonPress(laneIndex, nearFar, hitMiss);
 	
 }
 

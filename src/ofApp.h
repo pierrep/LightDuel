@@ -122,10 +122,8 @@ class ofApp : public ofBaseApp{
 	static string _Lane1PuckOSCAdd;
 
 	
-	// OSC sender
+    // OSC
 	ofxOscSender oscSender;
-
-	// TODO: Osc reciever
 	ofxOscReceiver oscReceiver;
 
     Game game;	
