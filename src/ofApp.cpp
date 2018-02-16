@@ -18,22 +18,27 @@ volatile int button2 = 0;
 volatile int button3 = 0;
 volatile int button4 = 0;
 
-void buttonHit1() {
+
+void buttonHit1()
+{
     //cout << "Button 1 Interrupt!" << endl;
     button1 = 1;
 }
 
-void buttonHit2() {
+void buttonHit2() 
+{
     //cout << "Button 2 Interrupt!" << endl;
     button2 = 1;
 }
 
-void buttonHit3() {
+void buttonHit3()
+{
     //cout << "Button 3 Interrupt!" << endl;
     button3 = 1;
 }
 
-void buttonHit4() {
+void buttonHit4() 
+{
     //cout << "Button 4 Interrupt!" << endl;
     button4 = 1;
 }
@@ -101,6 +106,8 @@ void ofApp::update()
 
     updateButtons();
 
+	
+
     curTime = ofGetElapsedTimeMillis();
     game.Update((curTime - prevTime) * .001f , buttons);
     prevTime = curTime;
@@ -122,6 +129,8 @@ void ofApp::update()
     updateFbo();                                // update our Fbo functions
     updateTeensy();
 
+	// Listen for osc
+	
 }
 
 //--------------------------------------------------------------
@@ -606,3 +615,118 @@ void ofApp::gotMessage(ofMessage msg){}
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){}
+
+
+// ----------------OSC--------------------------------
+// Admin
+static string _GetSettingsOSCAdd = "/lightduel/getsettings";
+static string _SetSettingsOSCAdd = "/lightduel/setsettings";
+static string _NewGameOSCAdd = "/lightduel/newgame";
+static string _ResetGameOSCAdd = "/lightduel/resetgame";
+static string _GameFinishedOSCAdd = "/lightduel/gamefinished";// Sent when game is over so we know we are ready for new users
+
+// Events and states
+static string _ButtonPressOSCAdd = "/lightduel/button";		//[int - laneIndex] [int - near/far 0/1]  [int - 0 for miss 1 for hit]
+static string _RoundWonOSCAdd = "/lightduel/roundwon";		//[int - player index] [int - lane index] [int - rally length]
+static string _GameWonOSCAdd = "/lightduel/gamewon";		//[int - player index]  [int - total rally length]
+static string _Lane0PuckOSCAdd = "/lightduel/puck0"; //[float - normalized pos]
+static string _Lane1PuckOSCAdd = "/lightduel/puck1"; //[float - normalized pos]
+
+void ofApp::ListenForOSC()  // Gets  the games settings
+{
+	while (oscReceiver.hasWaitingMessages())
+	{
+		// get the next message
+		ofxOscMessage m;
+		oscReceiver.getNextMessage(&m);
+
+		if (m.getAddress() == _GetSettingsOSCAdd)
+		{
+			ofxOscMessage m;
+			m.setAddress(_SetSettingsOSCAdd);
+			m.addFloatArg(game._LeftLane.m_Puck.m_Acceleration);
+			m.addInt32Arg(game._RoundsPerGame);
+
+			m.addFloatArg(game._NearPlayerCol.r);
+			m.addFloatArg(game._NearPlayerCol.g);
+			m.addFloatArg(game._NearPlayerCol.b);
+
+			m.addFloatArg(game._FarPlayerCol.r);
+			m.addFloatArg(game._FarPlayerCol.g);
+			m.addFloatArg(game._FarPlayerCol.b);
+
+			oscSender.sendMessage(m);
+		}
+		else if (m.getAddress() == _SetSettingsOSCAdd)
+		{
+			game._LeftLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
+			game._RightLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
+
+			game._RoundsPerGame = m.getArgAsInt32(1);
+
+
+		}
+		else if (m.getAddress() == _NewGameOSCAdd)
+		{
+
+		}
+		else if (m.getAddress() == _ResetGameOSCAdd)
+		{
+
+		}
+		else if (m.getAddress() == _GameFinishedOSCAdd)
+		{
+
+		}
+	}
+}
+
+void ofApp::SendGameFinished()	// sends when game is over and we return to idle
+{
+	ofxOscMessage m;
+	m.setAddress(_GameFinishedOSCAdd);
+	oscSender.sendMessage(m);
+}
+
+void ofApp::SendButtonPress(int laneIndex, int nearFar, int hitMiss)
+{
+	ofxOscMessage m;
+	m.setAddress(_ButtonPressOSCAdd);
+	m.addInt32Arg(laneIndex);
+	m.addInt32Arg(nearFar);
+	m.addInt32Arg(hitMiss);
+	oscSender.sendMessage(m);
+}
+
+void ofApp::SendRoundWon(int playerIndex, int laneIndex, int rallyLength)
+{
+	ofxOscMessage m;
+	m.setAddress(_RoundWonOSCAdd);
+	m.addInt32Arg(playerIndex);
+	m.addInt32Arg(laneIndex);
+	m.addInt32Arg(rallyLength);
+	oscSender.sendMessage(m);
+}
+
+void ofApp::SendGameWon(int playerIndex, int rallyLength)
+{
+	ofxOscMessage m;
+	m.setAddress(_GameWonOSCAdd);
+	m.addInt32Arg(playerIndex);
+	m.addInt32Arg(rallyLength);
+	oscSender.sendMessage(m);
+}
+
+void ofApp::SendPuckPositions(Puck p0, Puck p1) // sends the normalized puck positions
+{
+	ofxOscMessage m;
+	m.setAddress(_Lane0PuckOSCAdd);
+	m.addFloatArg(p0.m_NormalizedPosition);
+	oscSender.sendMessage(m);
+
+	ofxOscMessage m2;
+	m2.setAddress(_Lane1PuckOSCAdd);
+	m2.addFloatArg(p1.m_NormalizedPosition);
+	oscSender.sendMessage(m2);
+	
+}

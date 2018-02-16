@@ -38,11 +38,6 @@ Game::Game()
 #endif
 
 	 _RightLane._LaneDrawFlipped = true;
-
-	 // Pass the lanes a ref to the game
-	// _LeftLane._Game = this;
-	// _RightLane._Game = this;
-	 
 }
 
 void Game::Setup(Button buttons[])
@@ -121,7 +116,7 @@ void Game::Update(float frameTime, Button buttons[])
                 buttonsDown++;
         }
 
-        if( buttonsDown >= 2 )
+        if( buttonsDown >= 3 )
         {
             ResetGame();
             SetState( waitingToServe );

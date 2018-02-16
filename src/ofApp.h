@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "button.h"
 #include "game.h"
+#include "ofxOsc.h"
 
 #ifdef TARGET_RASPBERRY_PI
 #include "wiringPi.h"
@@ -40,6 +41,16 @@ class ofApp : public ofBaseApp{
         void showFPS();
         void setupButtons();
         void updateButtons();
+
+		//----------------------------OSC
+		// admin osc events
+		void ListenForOSC();
+		void SendGameFinished();	// sends when game is over and we return to idle
+		void SendButtonPress(int laneIndex, int nearFar, int hitMiss);
+		void SendRoundWon(int playerIndex, int laneIndex, int rallyLength);
+		void SendGameWon(int playerIndex, int rallyLength);
+		void SendPuckPositions(Puck p0, Puck p1); // sends the normalized puck positions
+
     
     // LED - Teensy stuff
     //-----------------------------
@@ -92,6 +103,30 @@ class ofApp : public ofBaseApp{
 
     //Buttons
     Button buttons[4];
+
+
+	// OSC
+	//-----------------------------
+	// admin
+	static string _GetSettingsOSCAdd;
+	static string _SetSettingsOSCAdd;
+	static string _NewGameOSCAdd;
+	static string _ResetGameOSCAdd;
+	static string _GameFinishedOSCAdd;
+
+	// events
+	static string _ButtonPressOSCAdd;
+	static string _RoundWonOSCAdd;
+	static string _GameWonOSCAdd;
+	static string _Lane0PuckOSCAdd;
+	static string _Lane1PuckOSCAdd;
+
+	
+	// OSC sender
+	ofxOscSender oscSender;
+
+	// TODO: Osc reciever
+	ofxOscReceiver oscReceiver;
 
     Game game;	
 };
