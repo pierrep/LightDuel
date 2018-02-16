@@ -59,5 +59,7 @@ class Game
 		// TODO change serving to an enum so its easier to read
         bool _NearPlayerServes = true;
 		player _Serving;
+        bool m_P1Serve;
+        bool m_P2Serve;
 };
 
