@@ -149,7 +149,7 @@ void Game::Update(float frameTime, Button buttons[])
                 buttonsDown++;
         }
 
-        if( buttonsDown >= 3 )
+        if( buttonsDown >= 2 )
         {
             ResetGame();
             SetState( waitingToServe );

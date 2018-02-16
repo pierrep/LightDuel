@@ -54,10 +54,12 @@ void Lane::update(float frameTime)
     if(m_Puck.m_NormalizedPosition < 0 )
     {
 		_FarScoredThisFrame = true;
+        ofLogNotice() << "Far scored this frame";
     }
     else if( m_Puck.m_NormalizedPosition > 1)
     {
 		_NearScoredThisFrame = true;
+        ofLogNotice() << "Near scored this frame";
     }	
     else
     {
@@ -71,11 +73,11 @@ void Lane::update(float frameTime)
 
 				m_Puck.ReturnPuck();
 
-				_Game.ButtonPressed(_Index, 0, 1);
+                _Game->ButtonPressed(_Index, 0, 1);
 			}
 			else
 			{
-				_Game.ButtonPressed(_Index, 0, 0);
+                _Game->ButtonPressed(_Index, 0, 0);
 			}
         }
 
@@ -87,11 +89,11 @@ void Lane::update(float frameTime)
 				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
 
-				_Game.ButtonPressed(_Index, 1, 1);
+                _Game->ButtonPressed(_Index, 1, 1);
 			}
 			else
 			{
-				_Game.ButtonPressed(_Index, 1, 0);
+                _Game->ButtonPressed(_Index, 1, 0);
 			}				
         }
     }
