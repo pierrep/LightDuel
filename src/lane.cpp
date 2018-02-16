@@ -53,11 +53,11 @@ void Lane::update(float frameTime)
 	// Check to see if the puck has moved outside lane == WIN
     if(m_Puck.m_NormalizedPosition < 0 )
     {
-		_NearScoredThisFrame = true;
+		_FarScoredThisFrame = true;
     }
     else if( m_Puck.m_NormalizedPosition > 1)
     {
-		_FarScoredThisFrame = true;
+		_NearScoredThisFrame = true;
     }	
     else
     {
@@ -71,11 +71,11 @@ void Lane::update(float frameTime)
 
 				m_Puck.ReturnPuck();
 
-                _Game->ButtonPressed(_Index, 0, 1);
+				_Game.ButtonPressed(_Index, 0, 1);
 			}
 			else
 			{
-                _Game->ButtonPressed(_Index, 0, 0);
+				_Game.ButtonPressed(_Index, 0, 0);
 			}
         }
 
@@ -87,11 +87,11 @@ void Lane::update(float frameTime)
 				ofLogNotice() << "Far return on lane:" << _Index;
 				m_Puck.ReturnPuck();
 
-                _Game->ButtonPressed(_Index, 1, 1);
+				_Game.ButtonPressed(_Index, 1, 1);
 			}
 			else
 			{
-                _Game->ButtonPressed(_Index, 1, 0);
+				_Game.ButtonPressed(_Index, 1, 0);
 			}				
         }
     }

@@ -78,6 +78,8 @@ void Game::Update(float frameTime, Button buttons[])
 				else
                     _ofApp->SendRoundWon(0, 1, _RallyLength);
 
+				_NearServe = true;
+
 				SetState(roundWon);
 			}
         }
@@ -90,6 +92,7 @@ void Game::Update(float frameTime, Button buttons[])
 			{
                 _ofApp->SendGameWon(1, _RallyLength);
 
+
 				SetState(gameWon);
 			}
 			else
@@ -98,6 +101,8 @@ void Game::Update(float frameTime, Button buttons[])
                     _ofApp->SendRoundWon(1, 0, _RallyLength);
 				else
                     _ofApp->SendRoundWon(1, 1, _RallyLength);
+
+				_NearServe = false;
 
 				SetState(roundWon);
 			}
@@ -177,17 +182,15 @@ void Game::SetState( state state )
         _LeftLane.Reset();
         _RightLane.Reset();
 
-        if( m_P1Serve )
+        if( _NearServe )
         {
             _LeftLane.m_Puck.ResetToStart();
-			_RightLane.m_Puck.ResetToStart();
-            m_P1Serve = false;
+			_RightLane.m_Puck.ResetToStart();        
         }
         else
         {
             _LeftLane.m_Puck.ResetToEnd();
-            _RightLane.m_Puck.ResetToEnd();
-            m_P1Serve = true;
+            _RightLane.m_Puck.ResetToEnd();          
         }
     }
     else if( m_State == inPlay )
@@ -219,8 +222,9 @@ void Game::ResetGame()
 
 
     _LeftLane.m_Puck.ResetToStart();
-    _RightLane.m_Puck.ResetToEnd();
-     m_P1Serve = false;
+    _RightLane.m_Puck.ResetToStart();
+
+     _NearServe = true;
 }
 
 void Game::DrawRings(int gameWidth)
