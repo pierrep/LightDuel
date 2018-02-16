@@ -642,6 +642,8 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 
 		if (m.getAddress() == _GetSettingsOSCAdd)
 		{
+			ofLogNotice() << "OSC ----- Get settings recieved:";
+
 			ofxOscMessage m;
 			m.setAddress(_SetSettingsOSCAdd);
 			m.addFloatArg(game._LeftLane.m_Puck.m_Acceleration);
@@ -659,23 +661,34 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 		}
 		else if (m.getAddress() == _SetSettingsOSCAdd)
 		{
+			ofLogNotice() << "OSC ----- Set settings recieved:";
+
 			game._LeftLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
 			game._RightLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
 
 			game._RoundsPerGame = m.getArgAsInt32(1);
 
+			game._NearPlayerCol.r = m.getArgAsInt32(2);
+			game._NearPlayerCol.g = m.getArgAsInt32(3);
+			game._NearPlayerCol.b = m.getArgAsInt32(4);
 
+			game._FarPlayerCol.r = m.getArgAsInt32(5);
+			game._FarPlayerCol.g = m.getArgAsInt32(6);
+			game._FarPlayerCol.b = m.getArgAsInt32(7);
 		}
 		else if (m.getAddress() == _NewGameOSCAdd)
 		{
-
+			ofLogNotice() << "OSC ----- New game recieved:";
+			game.ResetGame();
 		}
 		else if (m.getAddress() == _ResetGameOSCAdd)
 		{
-
+			ofLogNotice() << "OSC ----- Reset game recieved:";
+			game.ResetGame();
 		}
 		else if (m.getAddress() == _GameFinishedOSCAdd)
 		{
+			ofLogNotice() << "OSC ----- Game finsihed recieved:";
 
 		}
 	}

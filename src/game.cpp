@@ -42,10 +42,6 @@ Game::Game()
 
 void Game::Setup(Button buttons[])
 {
-	// Setup OSC
-    oscSender.setup(HOST,PORT);
-	oscReceiver.setup(PORT);
-	   
     _RightLane.Init(&buttons[0], &buttons[3], _NearPlayerCol,_FarPlayerCol);
 	_LeftLane.Init(&buttons[1], &buttons[2], _NearPlayerCol, _FarPlayerCol);
 }
@@ -126,6 +122,7 @@ void Game::Update(float frameTime, Button buttons[])
 
 void Game::ButtonPressed(int btnIndex, bool hitPuck)
 {
+	/*
 	ofxOscMessage m;
 	m.setAddress(_ButtonPressOSCAdd);
 
@@ -141,6 +138,9 @@ void Game::ButtonPressed(int btnIndex, bool hitPuck)
 	}
 	
 	oscSender.sendMessage(m);	
+	*/
+
+	//TODO call send from ofapp
 }
 
 void Game::SetState( state state )
@@ -185,10 +185,6 @@ void Game::SetState( state state )
         m_StateTimer = 0;
     }
 
-	ofxOscMessage m;
-	m.setAddress(_StateOSCAdd);
-    m.addInt32Arg((int)m_State);
-	oscSender.sendMessage(m);
 }
 
 void Game::ResetGame()
