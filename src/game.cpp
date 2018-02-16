@@ -60,6 +60,7 @@ void Game::Update(float frameTime, Button buttons[])
 		_OfApp.SendPuckPositions(_LeftLane.m_Puck, _RightLane.m_Puck);
 
 		// Check wins
+		// near player scored
         if(_LeftLane._NearScoredThisFrame || _RightLane._NearScoredThisFrame)
         {
             m_WinningColor = _NearPlayerCol;
@@ -68,7 +69,7 @@ void Game::Update(float frameTime, Button buttons[])
 			if (_NearPlayerScore >= _RoundsPerGame)
 			{
 				_OfApp.SendGameWon(0, _RallyLength);
-
+								
 				SetState(gameWon);
 			}
 			else
@@ -78,9 +79,12 @@ void Game::Update(float frameTime, Button buttons[])
 				else
 					_OfApp.SendRoundWon(0, 1, _RallyLength);
 
+				_NearPlayerServes = true;
+
 				SetState(roundWon);
 			}
         }
+		// far player scored
         else if(_LeftLane._FarScoredThisFrame || _RightLane._FarScoredThisFrame)
         {
              m_WinningColor = _FarPlayerCol;
@@ -98,6 +102,8 @@ void Game::Update(float frameTime, Button buttons[])
 					_OfApp.SendRoundWon(1, 0, _RallyLength);
 				else
 					_OfApp.SendRoundWon(1, 1, _RallyLength);
+
+				_NearPlayerServes = false;
 
 				SetState(roundWon);
 			}
@@ -175,17 +181,15 @@ void Game::SetState( state state )
         _LeftLane.Reset();
         _RightLane.Reset();
 
-        if( m_P1Serve )
+        if( _NearPlayerServes )
         {
             _LeftLane.m_Puck.ResetToStart();
 			_RightLane.m_Puck.ResetToStart();
-            m_P1Serve = false;
         }
         else
         {
             _LeftLane.m_Puck.ResetToEnd();
             _RightLane.m_Puck.ResetToEnd();
-            m_P1Serve = true;
         }
     }
     else if( m_State == inPlay )
@@ -218,7 +222,11 @@ void Game::ResetGame()
 
     _LeftLane.m_Puck.ResetToStart();
     _RightLane.m_Puck.ResetToEnd();
-     m_P1Serve = false;
+
+	float rand = ofRandom(-1, 1);
+
+	if(rand<0)	_NearPlayerServes = false;
+	else		_NearPlayerServes = true;
 }
 
 void Game::DrawRings(int gameWidth)
