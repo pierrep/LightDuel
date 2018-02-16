@@ -6,10 +6,10 @@
 #define BUTTON_3 6
 #define BUTTON_4 4
 
-//#define HOST "172.24.1.20"
-#define HOST "localhost"
-#define RECEIVE_PORT 10001
-#define SEND_PORT 10002
+#define HOST "172.24.1.50"
+//#define HOST "localhost"
+#define SEND_PORT 10001
+#define RECEIVE_PORT 10002
 
 volatile int do_exit = 0;
 
@@ -86,8 +86,8 @@ void ofApp::setup() {
     curTime = ofGetElapsedTimeMillis();
     prevTime = curTime;
 
-    oscSender.setup(HOST,RECEIVE_PORT);
-    oscReceiver.setup(SEND_PORT);
+    oscSender.setup(HOST,SEND_PORT);
+    oscReceiver.setup(RECEIVE_PORT);
 
     game.Setup(buttons, this);
 }
@@ -652,7 +652,7 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 
 		if (m.getAddress() == _GetSettingsOSCAdd)
 		{
-			ofLogNotice() << "OSC ----- Get settings recieved:";
+            ofLogNotice() << "OSC ----- Get settings received:";
 
 			ofxOscMessage m;
 			m.setAddress(_SetSettingsOSCAdd);
@@ -667,11 +667,11 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 			m.addFloatArg(game._FarPlayerCol.g);
 			m.addFloatArg(game._FarPlayerCol.b);
 
-			oscSender.sendMessage(m);
+            oscSender.sendMessage(m,false);
 		}
 		else if (m.getAddress() == _SetSettingsOSCAdd)
 		{
-			ofLogNotice() << "OSC ----- Set settings recieved:";
+            ofLogNotice() << "OSC ----- Set settings received:";
 
 			game._LeftLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
 			game._RightLane.m_Puck.m_Acceleration = m.getArgAsFloat(0);
@@ -688,12 +688,12 @@ void ofApp::ListenForOSC()  // Gets  the games settings
 		}
 		else if (m.getAddress() == _NewGameOSCAdd)
 		{
-			ofLogNotice() << "OSC ----- New game recieved:";
+            ofLogNotice() << "OSC ----- New game received:";
 			game.ResetGame();
 		}
 		else if (m.getAddress() == _ResetGameOSCAdd)
 		{
-			ofLogNotice() << "OSC ----- Reset game recieved:";
+            ofLogNotice() << "OSC ----- Reset game received:";
 			game.ResetGame();
 		}		
 	}
@@ -703,7 +703,7 @@ void ofApp::SendGameFinished()	// sends when game is over and we return to idle
 {
 	ofxOscMessage m;
 	m.setAddress(_GameFinishedOSCAdd);
-	oscSender.sendMessage(m);
+    oscSender.sendMessage(m,false);
 }
 
 void ofApp::SendButtonPress(int laneIndex, int nearFar, int hitMiss)
@@ -713,7 +713,7 @@ void ofApp::SendButtonPress(int laneIndex, int nearFar, int hitMiss)
 	m.addInt32Arg(laneIndex);
 	m.addInt32Arg(nearFar);
 	m.addInt32Arg(hitMiss);
-	oscSender.sendMessage(m);
+    oscSender.sendMessage(m,false);
 }
 
 void ofApp::SendRoundWon(int playerIndex, int laneIndex, int rallyLength)
@@ -723,7 +723,7 @@ void ofApp::SendRoundWon(int playerIndex, int laneIndex, int rallyLength)
 	m.addInt32Arg(playerIndex);
 	m.addInt32Arg(laneIndex);
 	m.addInt32Arg(rallyLength);
-	oscSender.sendMessage(m);
+    oscSender.sendMessage(m,false);
 }
 
 void ofApp::SendGameWon(int playerIndex, int rallyLength)
@@ -732,7 +732,7 @@ void ofApp::SendGameWon(int playerIndex, int rallyLength)
 	m.setAddress(_GameWonOSCAdd);
 	m.addInt32Arg(playerIndex);
 	m.addInt32Arg(rallyLength);
-	oscSender.sendMessage(m);
+    oscSender.sendMessage(m,false);
 }
 
 void ofApp::SendPuckPositions(Puck p0, Puck p1) // sends the normalized puck positions
@@ -740,11 +740,11 @@ void ofApp::SendPuckPositions(Puck p0, Puck p1) // sends the normalized puck pos
 	ofxOscMessage m;
 	m.setAddress(_Lane0PuckOSCAdd);
 	m.addFloatArg(p0.m_NormalizedPosition);
-	oscSender.sendMessage(m);
+    oscSender.sendMessage(m,false);
 
 	ofxOscMessage m2;
 	m2.setAddress(_Lane1PuckOSCAdd);
 	m2.addFloatArg(p1.m_NormalizedPosition);
-	oscSender.sendMessage(m2);
+    oscSender.sendMessage(m2,false);
 	
 }
