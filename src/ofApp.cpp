@@ -7,7 +7,7 @@
 #define BUTTON_4 4
 
 #define HOST "172.24.1.50"
-//#define HOST "localhost"
+#define HOST2 "172.24.1.143"
 #define SEND_PORT 10001
 #define RECEIVE_PORT 10002
 
@@ -79,7 +79,7 @@ void ofApp::setup() {
     #endif
 
     // allocate our pixels, fbo, and texture
-    fbo.allocate(stripWidth, stripHeight*stripsPerPort*numPorts*20, GL_RGB);
+    fbo.allocate(280, stripHeight*stripsPerPort*numPorts*20, GL_RGB);
 
     setupMedia();
 
@@ -87,6 +87,7 @@ void ofApp::setup() {
     prevTime = curTime;
 
     oscSender.setup(HOST,SEND_PORT);
+    oscAudioSender.setup(HOST2,SEND_PORT);
     oscReceiver.setup(RECEIVE_PORT);
 
     game.Setup(buttons, this);
@@ -109,8 +110,6 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-
-    showFPS();
     if(do_exit == 1) {exit();std::exit(1);}
 
     updateButtons();
@@ -186,6 +185,8 @@ void ofApp::updateTeensy()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    //showFPS();
+
     #ifdef TARGET_RASPBERRY_PI
     return;
     #endif
@@ -215,7 +216,7 @@ void ofApp::drawGamePixels()
     ofDrawBitmapString("LANE 0",0,-15);
     for (int y = 0; y < 2; y++)
     {
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
@@ -246,14 +247,14 @@ void ofApp::drawGamePixels()
     ofTranslate(0,100);
 
     ofSetColor(255);
-    ofDrawBitmapString("LANE 1",stripWidth*pixelWidth+250,15);
+    ofDrawBitmapString("LANE 1",fbo.getWidth()*pixelWidth+250,15);
     for (int y = 4; y < 6; y++)
     {
         //for (int x = stripWidth-1; x >= 0; x--)
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
-            currentColour = teensy.pixels1.getColor(stripWidth -1 - x, y);
+            currentColour = teensy.pixels1.getColor(fbo.getWidth() -1 - x, y);
             ofSetColor(currentColour);
             ofTranslate(x*pixelWidth, y*pixelWidth*2 );
             ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
@@ -264,10 +265,10 @@ void ofApp::drawGamePixels()
     ofTranslate(0,50);
 
     ofSetColor(255);
-    ofDrawBitmapString("RING 1",stripWidth*pixelWidth+250,30);
+    ofDrawBitmapString("RING 1",fbo.getWidth()*pixelWidth+250,30);
     for (int y = 6; y < 8; y++)
     {
-        for (int x = 270; x < stripWidth; x++)
+        for (int x = 270; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
@@ -294,7 +295,7 @@ void ofApp::drawRawPixels()
 
     for (int y = 0; y < stripHeight*stripsPerPort; y++)
     {
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
@@ -403,16 +404,16 @@ void ofApp::keyPressed(int key){
     switch (key)
     {
         case '1':
-            buttons[2].setState(1);
-            break;
-        case '2':
             buttons[3].setState(1);
             break;
+        case '2':
+            buttons[2].setState(1);
+            break;
         case '3':
-            buttons[1].setState(1);
+            buttons[0].setState(1);
         break;
         case '4':
-            buttons[0].setState(1);
+            buttons[1].setState(1);
         break;
 
         case OF_KEY_UP:
@@ -504,16 +505,16 @@ void ofApp::keyReleased(int key)
             }
             break;
         case '1':
-            buttons[2].setState(0);
-            break;
-        case '2':
             buttons[3].setState(0);
             break;
+        case '2':
+            buttons[2].setState(0);
+            break;
         case '3':
-            buttons[1].setState(0);
+            buttons[0].setState(0);
         break;
         case '4':
-            buttons[0].setState(0);
+            buttons[1].setState(0);
         break;
         default:
             break;
@@ -706,6 +707,7 @@ void ofApp::SendGameFinished()	// sends when game is over and we return to idle
 	ofxOscMessage m;
 	m.setAddress(_GameFinishedOSCAdd);
     oscSender.sendMessage(m,false);
+    oscAudioSender.sendMessage(m,false);
 }
 
 void ofApp::SendReadyToServe(float end)	// sends when game is over and we return to idle
@@ -724,6 +726,7 @@ void ofApp::SendButtonPress(int laneIndex, int nearFar, int hitMiss)
 	m.addInt32Arg(nearFar);
 	m.addInt32Arg(hitMiss);
     oscSender.sendMessage(m,false);
+    oscAudioSender.sendMessage(m,false);
 }
 
 void ofApp::SendRoundWon(int playerIndex, int laneIndex, int rallyLength)
@@ -734,6 +737,7 @@ void ofApp::SendRoundWon(int playerIndex, int laneIndex, int rallyLength)
 	m.addInt32Arg(laneIndex);
 	m.addInt32Arg(rallyLength);
     oscSender.sendMessage(m,false);
+    oscAudioSender.sendMessage(m,false);
 }
 
 void ofApp::SendGameWon(int playerIndex, int rallyLength)
@@ -743,6 +747,7 @@ void ofApp::SendGameWon(int playerIndex, int rallyLength)
 	m.addInt32Arg(playerIndex);
 	m.addInt32Arg(rallyLength);
     oscSender.sendMessage(m,false);
+    oscAudioSender.sendMessage(m,false);
 }
 
 void ofApp::SendPuckPositions(Puck p0, Puck p1) // sends the normalized puck positions
@@ -751,10 +756,12 @@ void ofApp::SendPuckPositions(Puck p0, Puck p1) // sends the normalized puck pos
 	m.setAddress(_Lane0PuckOSCAdd);
 	m.addFloatArg(p0.m_NormalizedPosition);
     oscSender.sendMessage(m,false);
+    oscAudioSender.sendMessage(m,false);
 
 	ofxOscMessage m2;
 	m2.setAddress(_Lane1PuckOSCAdd);
 	m2.addFloatArg(p1.m_NormalizedPosition);
     oscSender.sendMessage(m2,false);
+    oscAudioSender.sendMessage(m,false);
 	
 }

@@ -126,6 +126,7 @@ class ofApp : public ofBaseApp{
 	
     // OSC
 	ofxOscSender oscSender;
+    ofxOscSender oscAudioSender;
 	ofxOscReceiver oscReceiver;
 
     Game game;	
