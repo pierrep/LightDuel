@@ -50,6 +50,7 @@ class ofApp : public ofBaseApp{
 		void SendRoundWon(int playerIndex, int laneIndex, int rallyLength);
 		void SendGameWon(int playerIndex, int rallyLength);
 		void SendPuckPositions(Puck p0, Puck p1); // sends the normalized puck positions
+		void SendReadyToServe(float end); // float end to serve
 
     
     // LED - Teensy stuff
@@ -120,6 +121,7 @@ class ofApp : public ofBaseApp{
 	static string _GameWonOSCAdd;
 	static string _Lane0PuckOSCAdd;
 	static string _Lane1PuckOSCAdd;
+	static string _RPiReadyToServeOSCAdd;
 
 	
     // OSC
