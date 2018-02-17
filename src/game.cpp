@@ -125,6 +125,7 @@ void Game::Update(float frameTime, Button buttons[])
     }
     else if( m_State == gameWon )
     {
+
         m_StateTimer += frameTime;
 
         m_StateNormTime = m_StateTimer/ m_GameWinDuration;
@@ -170,11 +171,13 @@ void Game::SetState( state state )
 
     if( m_State == idle )
     {
+        ofLogNotice() << "State: IDLE";
         // Wait for button presses
         ResetGame();
     }
     else if( m_State == waitingToServe )
     {
+        ofLogNotice() << "State: WAITING TO SERVE";
         m_StateTimer = 0;
 
         _LeftLane.Reset();
@@ -195,14 +198,16 @@ void Game::SetState( state state )
     }
     else if( m_State == inPlay )
     {
-
+        ofLogNotice() << "State: IN PLAY";
     }
     else if( m_State == roundWon )
     {
+        ofLogNotice() << "State: ROUND WON";
         m_StateTimer = 0;
     }
     else if( m_State == gameWon )
     {
+        ofLogNotice() << "State: GAME WON";
         m_StateTimer = 0;
 		
     }
