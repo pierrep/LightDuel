@@ -643,6 +643,8 @@ string ofApp::_GameWonOSCAdd = "/lightduel/gamewon";		//[int - player index]  [i
 string ofApp::_Lane0PuckOSCAdd = "/lightduel/puck0"; //[float - normalized pos]
 string ofApp::_Lane1PuckOSCAdd = "/lightduel/puck1"; //[float - normalized pos]
 
+string ofApp::_RPiReadyToServeOSCAdd = "/lightduel/readyToServe";
+
 void ofApp::ListenForOSC()  // Gets  the games settings
 {
 	while (oscReceiver.hasWaitingMessages())
@@ -706,6 +708,14 @@ void ofApp::SendGameFinished()	// sends when game is over and we return to idle
 	m.setAddress(_GameFinishedOSCAdd);
     oscSender.sendMessage(m,false);
     oscAudioSender.sendMessage(m,false);
+}
+
+void ofApp::SendReadyToServe(float end)	// sends when game is over and we return to idle
+{
+	ofxOscMessage m;
+	m.setAddress(_RPiReadyToServeOSCAdd);
+	m.addFloatArg(end);
+	oscSender.sendMessage(m, false);
 }
 
 void ofApp::SendButtonPress(int laneIndex, int nearFar, int hitMiss)

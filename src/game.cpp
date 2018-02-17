@@ -182,12 +182,14 @@ void Game::SetState( state state )
         if( _NearServe )
         {
             _LeftLane.m_Puck.ResetToStart();
-			_RightLane.m_Puck.ResetToStart();        
+			_RightLane.m_Puck.ResetToStart();   
+			_ofApp->SendReadyToServe(0);
         }
         else
         {
             _LeftLane.m_Puck.ResetToEnd();
-            _RightLane.m_Puck.ResetToEnd();          
+            _RightLane.m_Puck.ResetToEnd();  
+			_ofApp->SendReadyToServe(1);
         }
     }
     else if( m_State == inPlay )
