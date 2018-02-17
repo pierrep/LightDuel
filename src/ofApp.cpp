@@ -216,7 +216,7 @@ void ofApp::drawGamePixels()
     ofDrawBitmapString("LANE 0",0,-15);
     for (int y = 0; y < 2; y++)
     {
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
@@ -247,14 +247,14 @@ void ofApp::drawGamePixels()
     ofTranslate(0,100);
 
     ofSetColor(255);
-    ofDrawBitmapString("LANE 1",stripWidth*pixelWidth+250,15);
+    ofDrawBitmapString("LANE 1",fbo.getWidth()*pixelWidth+250,15);
     for (int y = 4; y < 6; y++)
     {
         //for (int x = stripWidth-1; x >= 0; x--)
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
-            currentColour = teensy.pixels1.getColor(stripWidth -1 - x, y);
+            currentColour = teensy.pixels1.getColor(fbo.getWidth() -1 - x, y);
             ofSetColor(currentColour);
             ofTranslate(x*pixelWidth, y*pixelWidth*2 );
             ofDrawRectangle(x, y, pixelWidth, pixelWidth*2);
@@ -265,10 +265,10 @@ void ofApp::drawGamePixels()
     ofTranslate(0,50);
 
     ofSetColor(255);
-    ofDrawBitmapString("RING 1",stripWidth*pixelWidth+250,30);
+    ofDrawBitmapString("RING 1",fbo.getWidth()*pixelWidth+250,30);
     for (int y = 6; y < 8; y++)
     {
-        for (int x = 270; x < stripWidth; x++)
+        for (int x = 270; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
@@ -295,7 +295,7 @@ void ofApp::drawRawPixels()
 
     for (int y = 0; y < stripHeight*stripsPerPort; y++)
     {
-        for (int x = 0; x < stripWidth; x++)
+        for (int x = 0; x < fbo.getWidth(); x++)
         {
             ofPushMatrix();
             currentColour = teensy.pixels1.getColor(x, y);
