@@ -136,7 +136,8 @@ void Game::Update(float frameTime, Button buttons[])
     }
     else if( m_State == idle )
     {
-        if(ofGetFrameNum()%180 == 0) {
+        if(ofGetFrameNum()%180 == 0)
+		{
             _ofApp->SendGameFinished();
         }
 
@@ -258,7 +259,7 @@ void Game::draw(int gameWidth, int gameHeight)
 
     if( m_State == idle )
     {
-        ofSetColor(ofColor::black);
+		ofSetColor(ofColor::white * sin(m_StateNormTime * 30));        
 		ofDrawRectangle(0,0,gameWidth,gameHeight);
     }
     else if( m_State == waitingToServe )
